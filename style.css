@@ -1,0 +1,101 @@
+/* 基本設定 */
+body {
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+/* ヘッダー */
+header {
+    background-color: #0056b3; /* 理科っぽい青 */
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+}
+
+header a.back-link {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+/* コンテンツの器 */
+.container {
+    max-width: 800px; /* PCで見やすく幅を制限 */
+    margin: 20px auto; /* 中央揃え */
+    padding: 0 15px;
+    background: white;
+    min-height: 80vh;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* トップページのメニュー */
+.category h3 {
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 5px;
+}
+.category ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* --- タブのデザイン --- */
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    background: #e9ecef;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1; /* 均等な幅にする */
+    padding: 15px 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+    border-bottom: 3px solid transparent;
+}
+
+/* 選ばれているタブのデザイン */
+.tab-btn.active {
+    color: #0056b3;
+    border-bottom: 3px solid #0056b3;
+    background: white;
+}
+
+/* タブの中身（初期状態はJSで制御しますが、CSSでも隠しておきます） */
+.tab-content {
+    display: none;
+    padding: 20px;
+}
+.tab-content.active {
+    display: block; /* activeがついているものだけ表示 */
+}
+
+/* --- レスポンシブ対応の肝 --- */
+/* シミュレーションや画像の枠 */
+#sim-container, .pdf-placeholder {
+    width: 100%; /* 親要素の幅いっぱいに広げる */
+    background: #eee;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+canvas {
+    width: 100%; /* 画面幅に合わせて伸縮 */
+    height: auto;
+    background: white;
+    border: 1px solid #ccc;
+}
