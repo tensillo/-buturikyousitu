@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 波の干渉</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .tab-btn:hover {
+            background: #8899f0;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        /* 解説用スタイル */
+        .lecture-content {
+            line-height: 1.8;
+            color: #333;
+        }
+        .lecture-content p {
+            margin-bottom: 15px;
+        }
+        .key-point {
+            background: linear-gradient(135deg, #e8f4fd 0%, #e0e7ff 100%);
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .key-point-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .formula-box {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .formula-box.constructive {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+        }
+        .formula-box.destructive {
+            border-color: #dc3545;
+            background: linear-gradient(135deg, #ffebee 0%, #fce4ec 100%);
+        }
+        .formula-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .formula-box.constructive .formula-label {
+            color: #28a745;
+        }
+        .formula-box.destructive .formula-label {
+            color: #dc3545;
+        }
+        
+        /* 動的図解用スタイル */
+        .interactive-figure {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .figure-title {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .figure-canvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .figure-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .figure-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .figure-btn.primary {
+            background: #667eea;
+            color: white;
+        }
+        .figure-btn.primary:hover {
+            background: #5a6fd6;
+        }
+        .figure-btn.secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .figure-btn.secondary:hover {
+            background: #5a6268;
+        }
+        .figure-btn.active {
+            background: #28a745;
+        }
+        .figure-btn.pause {
+            background: #ff9800;
+            color: white;
+        }
+        .figure-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .figure-legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+        .legend-line {
+            width: 30px;
+            height: 3px;
+        }
+        .legend-line.solid {
+            background: #5c8cc9;
+        }
+        .legend-line.dashed {
+            background: repeating-linear-gradient(90deg, #d97777, #d97777 5px, transparent 5px, transparent 10px);
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .legend-dot.constructive {
+            background: #4CAF50;
+        }
+        .legend-dot.destructive {
+            background: #f44336;
+        }
+        
+        /* 情報表示パネル */
+        .info-display {
+            background: #f0f0f0;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .info-display .item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .info-display .label {
+            color: #666;
+        }
+        .info-display .value {
+            font-weight: bold;
+            color: #333;
+        }
+        .info-display .value.red { color: #c0392b; }
+        .info-display .value.blue { color: #2980b9; }
+        .info-display .value.purple { color: #8e44ad; }
+        .info-display .value.green { color: #27ae60; }
+        
+        /* シミュレーション用スタイル */
+        #sim-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .canvas-wrapper {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .canvas-box {
+            flex: 1;
+            min-width: 300px;
+        }
+        .canvas-box h4 {
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        #physicsCanvas, #physics3DCanvas {
+            display: block;
+            width: 100%;
+            background: #1a1a2e;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            cursor: crosshair;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group {
+            margin-bottom: 20px;
+        }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start {
+            background: #4CAF50;
+            color: white;
+        }
+        .sim-button.start:hover {
+            background: #45a049;
+        }
+        .sim-button.reset {
+            background: #f44336;
+            color: white;
+        }
+        .sim-button.reset:hover {
+            background: #da190b;
+        }
+        .sim-button.toggle {
+            background: #2196F3;
+            color: white;
+        }
+        .sim-button.toggle:hover {
+            background: #1976D2;
+        }
+        .sim-button.toggle.active {
+            background: #ff9800;
+        }
+        
+        /* 測定点情報パネル */
+        .info-panel {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .info-panel h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .info-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .info-item .label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .info-item .value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            font-family: 'Courier New', monospace;
+        }
+        .info-item.highlight-green .value {
+            color: #28a745;
+        }
+        .info-item.highlight-red .value {
+            color: #dc3545;
+        }
+        .info-item.highlight-yellow .value {
+            color: #ffc107;
+        }
+        
+        /* 問題用スタイル */
+        .problem-section {
+            margin-bottom: 30px;
+        }
+        .problem-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .problem-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        details {
+            background: #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+        }
+        details[open] summary {
+            margin-bottom: 10px;
+        }
+        .answer-content {
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            header, .container {
+                padding: 15px;
+            }
+            .tab-btn {
+                min-width: 100px;
+                font-size: 14px;
+            }
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .canvas-wrapper {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>波の干渉</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <!-- 解説タブ -->
+        <div id="lecture" class="tab-content active">
+            <h2>波の干渉とは</h2>
+            <div class="lecture-content">
+                <p>
+                    2つ以上の波が重なり合うとき、波の重ね合わせの原理により、各点での変位は個々の波の変位の和になります。
+                    特に、<strong>一定間隔で複数の波源から波が発生し続ける</strong>場合、強め合う場所と弱め合う場所が<strong>規則的に</strong>並ぶ現象が起こります。
+                    これを<strong style="color: #667eea;">波の干渉</strong>といいます。
+                </p>
+                
+                <h3>水面波の干渉を観察しよう</h3>
+                <p>
+                    下の図では、2つの波源 $S_1$ と $S_2$ から同じ周期・同じ振幅の波が発生しています。
+                    <strong>実線は山（波の頂上）</strong>、<strong style="color: #cc6666;">破線は谷（波の底）</strong>を表しています。
+                </p>
+                
+                <!-- 動的図解1：水面波の干渉 -->
+                <div class="interactive-figure">
+                    <div class="figure-title">
+                        <span>📊</span> 図1：水面波の干渉パターン
+                    </div>
+                    <canvas id="lectureCanvas1" class="figure-canvas" height="400"></canvas>
+                    <div class="figure-controls">
+                        <button class="figure-btn primary" id="fig1PlayBtn">▶ 再生</button>
+                        <button class="figure-btn secondary" id="fig1ResetBtn">リセット</button>
+                        <select class="figure-select" id="fig1PhaseSelect">
+                            <option value="same">同位相（山と山が同時に出る）</option>
+                            <option value="opposite">逆位相（山と谷が同時に出る）</option>
+                        </select>
+                    </div>
+                    <div class="figure-legend">
+                        <div class="legend-item">
+                            <div class="legend-line solid"></div>
+                            <span>山（実線）</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-line dashed"></div>
+                            <span>谷（破線）</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot constructive"></div>
+                            <span>強め合い</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot destructive"></div>
+                            <span>弱め合い</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="key-point">
+                    <div class="key-point-title">💡 観察のポイント</div>
+                    <ul style="margin-left: 20px;">
+                        <li><strong style="color: #28a745;">緑の点</strong>：山と山、または谷と谷が重なる場所 → <strong>常に強め合う</strong></li>
+                        <li><strong style="color: #dc3545;">赤の点</strong>：山と谷が重なる場所 → <strong>常に弱め合う（打ち消し合う）</strong></li>
+                        <li>これらの点は時間が経っても変わらず、<strong>双曲線上</strong>に規則的に並びます</li>
+                    </ul>
+                </div>
+                
+                <h3>経路差とは</h3>
+                <p>
+                    任意の点 $P$ において、2つの波源からの距離の差を<strong style="color: #667eea;">経路差（けいろさ）</strong>といいます。
+                </p>
+                
+                <h3>干渉条件の導出</h3>
+                <p>
+                    2つの波源から<strong>同位相</strong>（同時に山、同時に谷）で波が出ている場合を考えます。
+                    点 $P$ に届く2つの波が強め合うか弱め合うかは、<strong>経路差が波長の何倍か</strong>で決まります。
+                </p>
+                
+                <div class="formula-box constructive">
+                    <div class="formula-label">✓ 強め合いの条件（同位相で届く）</div>
+                    <p style="font-size: 1.2em;">
+                        $$|S_1P - S_2P| = m\lambda \quad (m = 0, 1, 2, 3, \cdots)$$
+                    </p>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        経路差が波長の整数倍のとき、2つの波は同位相で到達し強め合う
+                    </p>
+                </div>
+                
+                <div class="formula-box destructive">
+                    <div class="formula-label">✗ 弱め合いの条件（逆位相で届く）</div>
+                    <p style="font-size: 1.2em;">
+                        $$|S_1P - S_2P| = \left(m + \frac{1}{2}\right)\lambda \quad (m = 0, 1, 2, 3, \cdots)$$
+                    </p>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        経路差が波長の半整数倍のとき、2つの波は逆位相で到達し弱め合う
+                    </p>
+                </div>
+                
+                <div class="key-point">
+                    <div class="key-point-title">📝 なぜこの条件になるのか？ ― 下の図で確認しよう</div>
+                    <p>
+                        波長 $\lambda$ は「1周期分の波の長さ」です。経路差が $\lambda$ の整数倍なら、
+                        一方の波はちょうど整数周期分だけ余分に進んだことになり、結局同じ位相で到達します。
+                        一方、$\frac{\lambda}{2}$ の奇数倍（半波長分ずれる）なら、位相が $\pi$（180°）ずれて逆位相になります。
+                    </p>
+                    <p style="margin-top: 10px; color: #667eea;">
+                        <strong>👇 点Pをドラッグして、波の重なり方を確認してみましょう！</strong>
+                    </p>
+                </div>
+                
+                <!-- 動的図解2：経路差と波の重ね合わせ -->
+                <div class="interactive-figure">
+                    <div class="figure-title">
+                        <span>📐</span> 図2：経路差と波の重ね合わせ（点Pをドラッグしてみよう）
+                    </div>
+                    <canvas id="lectureCanvas2" class="figure-canvas" height="520"></canvas>
+                    <div class="figure-controls">
+                        <button class="figure-btn primary" id="fig2PlayBtn">⏸ 一時停止</button>
+                        <select class="figure-select" id="fig2PhaseSelect">
+                            <option value="same">同位相</option>
+                            <option value="opposite">逆位相</option>
+                        </select>
+                        <button class="figure-btn secondary" id="fig2ResetBtn">位置をリセット</button>
+                    </div>
+                    <div class="info-display" id="fig2Info">
+                        <div class="item">
+                            <span class="label">S₁P (r₁) =</span>
+                            <span class="value red" id="fig2R1">-</span>
+                        </div>
+                        <div class="item">
+                            <span class="label">S₂P (r₂) =</span>
+                            <span class="value blue" id="fig2R2">-</span>
+                        </div>
+                        <div class="item">
+                            <span class="label">経路差 |r₁-r₂| =</span>
+                            <span class="value purple" id="fig2PathDiff">-</span>
+                        </div>
+                        <div class="item">
+                            <span class="label">判定:</span>
+                            <span class="value green" id="fig2Result">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>授業資料</h3>
+                <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+            </div>
+        </div>
+        
+        <!-- 問題タブ -->
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem-section">
+                <div class="problem-box">
+                    <span class="problem-number">問題 1</span>
+                    <p>
+                        2つの波源 $S_1$, $S_2$ から、波長 $\lambda = 2.0$ cm の水面波が同位相で発生している。
+                        ある点 $P$ において、$S_1P = 8.0$ cm、$S_2P = 5.0$ cm であるとき、
+                        点 $P$ では波は強め合うか、弱め合うか。理由とともに答えよ。
+                    </p>
+                    <details>
+                        <summary>解答・解説を見る</summary>
+                        <div class="answer-content">
+                            <p><strong>【解答】</strong>弱め合う</p>
+                            <p><strong>【解説】</strong></p>
+                            <p>経路差を計算すると、</p>
+                            <p>$$|S_1P - S_2P| = |8.0 - 5.0| = 3.0 \text{ cm}$$</p>
+                            <p>これを波長で割ると、</p>
+                            <p>$$\frac{3.0}{2.0} = 1.5 = 1 + \frac{1}{2}$$</p>
+                            <p>経路差が波長の $(m + \frac{1}{2})$ 倍（$m = 1$）なので、<strong style="color: #dc3545;">弱め合いの条件</strong>を満たす。</p>
+                            <p>よって、点 $P$ では波は<strong>弱め合う</strong>。</p>
+                        </div>
+                    </details>
+                </div>
+                
+                <div class="problem-box">
+                    <span class="problem-number">問題 2</span>
+                    <p>
+                        波長 $\lambda$ の水面波を発生させる2つの同位相の波源 $S_1$, $S_2$ がある。
+                        $S_1$ と $S_2$ を結ぶ直線上で、$S_1$ から $S_2$ の方向に距離 $x$ の点を $P$ とする。
+                        $S_1S_2$ 間の距離を $d$ とするとき、点 $P$ で強め合いが起こる条件を $x$, $d$, $\lambda$ を用いて表せ。
+                        ただし、$0 < x < d$ とする。
+                    </p>
+                    <details>
+                        <summary>解答・解説を見る</summary>
+                        <div class="answer-content">
+                            <p><strong>【解答】</strong>$d - 2x = m\lambda$ （$m$ は整数で、$-\frac{d}{\lambda} < m < \frac{d}{\lambda}$）</p>
+                            <p><strong>【解説】</strong></p>
+                            <p>点 $P$ は $S_1$ と $S_2$ の間にあるので、</p>
+                            <p>$$S_1P = x, \quad S_2P = d - x$$</p>
+                            <p>経路差は、</p>
+                            <p>$$|S_1P - S_2P| = |x - (d-x)| = |2x - d|$$</p>
+                            <p>強め合いの条件は、経路差が波長の整数倍なので、</p>
+                            <p>$$|2x - d| = m\lambda$$</p>
+                            <p>これを整理すると、</p>
+                            <p>$$d - 2x = m\lambda \quad \text{または} \quad 2x - d = m\lambda$$</p>
+                            <p>（$m$ は整数。$0 < x < d$ の範囲で解が存在する $m$ の値に制限される）</p>
+                        </div>
+                    </details>
+                </div>
+                
+                <div class="problem-box">
+                    <span class="problem-number">問題 3</span>
+                    <p>
+                        下図のように、2つの同位相の波源 $S_1$, $S_2$ から波長 $\lambda = 4.0$ cm の波が出ている。
+                        $S_1S_2 = 10.0$ cm、$S_1S_2$ の垂直二等分線上の点を $Q$ とする。
+                    </p>
+                    <p>
+                        (1) 点 $Q$ では波は強め合うか、弱め合うか。<br>
+                        (2) $S_1S_2$ の垂直二等分線上で、弱め合いが起こる点のうち、
+                        $S_1$, $S_2$ に最も近い点までの距離 $S_1P$（または $S_2P$）を求めよ。
+                    </p>
+                    <details>
+                        <summary>解答・解説を見る</summary>
+                        <div class="answer-content">
+                            <p><strong>【解答】</strong>(1) 強め合う　(2) $S_1P = S_2P = \sqrt{29} \approx 5.4$ cm</p>
+                            <p><strong>【解説】</strong></p>
+                            <p><strong>(1)</strong> 垂直二等分線上の任意の点 $Q$ では、$S_1Q = S_2Q$ なので、</p>
+                            <p>$$|S_1Q - S_2Q| = 0 = 0 \times \lambda$$</p>
+                            <p>経路差が $0$（波長の $0$ 倍）なので、強め合いの条件を満たす。よって<strong>強め合う</strong>。</p>
+                            <p><strong>(2)</strong> 垂直二等分線上の点を $P$ とすると、$S_1P = S_2P$ より経路差は常に $0$。</p>
+                            <p>しかし問題文は「垂直二等分線上で弱め合う点」を求めていますが、垂直二等分線上では経路差が $0$ なので弱め合いは起こりません。</p>
+                            <p>この問題を「$S_1$, $S_2$ から等距離で弱め合う点のうち最も近い点」と解釈すると、弱め合いの条件は</p>
+                            <p>$$|S_1P - S_2P| = \frac{\lambda}{2} = 2.0 \text{ cm}$$</p>
+                            <p>$S_1$, $S_2$ から最も近い弱め合いの点は、$S_1S_2$ を結ぶ線分上にあり、</p>
+                            <p>垂直二等分線から $\frac{\lambda}{4} = 1.0$ cm ずれた位置となる。</p>
+                            <p>このとき、$S_1P = 5.0 - 1.0 = 4.0$ cm、$S_2P = 5.0 + 1.0 = 6.0$ cm で経路差は $2.0$ cm。</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+        
+        <!-- シミュレーションタブ -->
+        <div id="simulation" class="tab-content">
+            <h2>波の干渉シミュレーション</h2>
+            <p>上から水滴が落ちて波紋が広がる様子を観察しましょう。キャンバス上をクリックすると経路差を確認できます。</p>
+            
+            <div id="sim-container">
+                <div class="canvas-wrapper">
+                    <div class="canvas-box">
+                        <h4>🔍 上から見た図（平面図）</h4>
+                        <canvas id="physicsCanvas"></canvas>
+                    </div>
+                    <div class="canvas-box">
+                        <h4>🌊 斜め上から見た図（立体図）</h4>
+                        <canvas id="physics3DCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sim-controls">
+                <div class="control-group">
+                    <label>波長 (λ): <span class="value-display" id="lambdaDisplay">60 px</span></label>
+                    <input type="range" id="lambdaSlider" min="30" max="120" value="60" step="5">
+                </div>
+                
+                <div class="control-group">
+                    <label>波源間距離 (d): <span class="value-display" id="distDisplay">120 px</span></label>
+                    <input type="range" id="distSlider" min="40" max="250" value="120" step="10">
+                </div>
+                
+                <div class="button-group">
+                    <button class="sim-button start" id="startBtn">▶ スタート</button>
+                    <button class="sim-button reset" id="resetBtn">リセット</button>
+                    <button class="sim-button toggle" id="showLinesBtn">干渉縞を表示</button>
+                </div>
+            </div>
+            
+            <!-- 測定点情報パネル -->
+            <div class="info-panel" id="pointInfoPanel" style="display: none;">
+                <h4>📍 測定点 P の情報</h4>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="label">S₁からの距離 (r₁)</div>
+                        <div class="value" id="r1Value">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">S₂からの距離 (r₂)</div>
+                        <div class="value" id="r2Value">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">経路差 |r₁ - r₂|</div>
+                        <div class="value" id="pathDiffValue">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">経路差 / λ</div>
+                        <div class="value" id="pathDiffRatioValue">-</div>
+                    </div>
+                    <div class="info-item" id="interferenceItem">
+                        <div class="label">干渉の種類</div>
+                        <div class="value" id="interferenceValue">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">条件式</div>
+                        <div class="value" id="conditionValue" style="font-size: 14px;">-</div>
+                    </div>
+                </div>
+                <button class="sim-button reset" id="clearPointBtn" style="margin-top: 15px; flex: none; min-width: auto;">測定点をクリア</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // ===== タブ切り替え機能 =====
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) {
+            event.currentTarget.classList.add("active");
+        }
+        
+        if (tabName === 'simulation') {
+            setTimeout(resizeSimCanvas, 100);
+        }
+    }
+
+    // ===== 解説タブ：図1（水面波の干渉パターン）=====
+    (function() {
+        const canvas = document.getElementById('lectureCanvas1');
+        const ctx = canvas.getContext('2d');
+        const playBtn = document.getElementById('fig1PlayBtn');
+        const resetBtn = document.getElementById('fig1ResetBtn');
+        const phaseSelect = document.getElementById('fig1PhaseSelect');
+        
+        let width, height;
+        let time = 0;
+        let isPlaying = false;
+        let animationId = null;
+        const lambda = 55;
+        const sourceDistance = 100;
+        let s1, s2;
+        
+        function setup() {
+            width = canvas.parentElement.clientWidth - 30;
+            height = 400;
+            canvas.width = width;
+            canvas.height = height;
+            s1 = { x: width / 2 - sourceDistance / 2, y: height / 2 };
+            s2 = { x: width / 2 + sourceDistance / 2, y: height / 2 };
+            draw();
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#fafaf5';
+            ctx.fillRect(0, 0, width, height);
+            
+            const isOpposite = phaseSelect.value === 'opposite';
+            const phaseOffset = isOpposite ? lambda / 2 : 0;
+            
+            const step = 10;
+            for (let x = 0; x < width; x += step) {
+                for (let y = 0; y < height; y += step) {
+                    const d1 = Math.sqrt(Math.pow(x - s1.x, 2) + Math.pow(y - s1.y, 2));
+                    const d2 = Math.sqrt(Math.pow(x - s2.x, 2) + Math.pow(y - s2.y, 2));
+                    let pathDiff = Math.abs(d1 - d2);
+                    if (isOpposite) pathDiff = Math.abs(d1 - d2 - lambda / 2);
+                    
+                    const m = pathDiff / lambda;
+                    const remainder = m - Math.floor(m);
+                    
+                    if (Math.abs(remainder) < 0.1 || Math.abs(remainder - 1) < 0.1) {
+                        ctx.fillStyle = 'rgba(76, 175, 80, 0.25)';
+                        ctx.beginPath();
+                        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                        ctx.fill();
+                    } else if (Math.abs(remainder - 0.5) < 0.1) {
+                        ctx.fillStyle = 'rgba(244, 67, 54, 0.25)';
+                        ctx.beginPath();
+                        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                        ctx.fill();
+                    }
+                }
+            }
+            
+            const maxRadius = Math.sqrt(width * width + height * height);
+            
+            for (let r = (time % lambda); r < maxRadius; r += lambda) {
+                ctx.strokeStyle = '#5c8cc9';
+                ctx.lineWidth = 2.5;
+                ctx.setLineDash([]);
+                ctx.beginPath();
+                ctx.arc(s1.x, s1.y, r, 0, 2 * Math.PI);
+                ctx.stroke();
+                
+                if (r + lambda / 2 < maxRadius) {
+                    ctx.strokeStyle = '#d97777';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([10, 6]);
+                    ctx.beginPath();
+                    ctx.arc(s1.x, s1.y, r + lambda / 2, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+            }
+            
+            for (let r = ((time + phaseOffset) % lambda); r < maxRadius; r += lambda) {
+                ctx.strokeStyle = '#5c8cc9';
+                ctx.lineWidth = 2.5;
+                ctx.setLineDash([]);
+                ctx.beginPath();
+                ctx.arc(s2.x, s2.y, r, 0, 2 * Math.PI);
+                ctx.stroke();
+                
+                if (r + lambda / 2 < maxRadius) {
+                    ctx.strokeStyle = '#d97777';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([10, 6]);
+                    ctx.beginPath();
+                    ctx.arc(s2.x, s2.y, r + lambda / 2, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+            }
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.arc(s1.x, s1.y, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(s2.x, s2.y, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 13px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('S₁', s1.x, s1.y);
+            ctx.fillText('S₂', s2.x, s2.y);
+        }
+        
+        function animate() {
+            if (!isPlaying) return;
+            time += 0.4;
+            draw();
+            animationId = requestAnimationFrame(animate);
+        }
+        
+        playBtn.addEventListener('click', function() {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playBtn.textContent = '⏸ 停止';
+                playBtn.classList.add('active');
+                animate();
+            } else {
+                playBtn.textContent = '▶ 再生';
+                playBtn.classList.remove('active');
+                if (animationId) cancelAnimationFrame(animationId);
+            }
+        });
+        
+        resetBtn.addEventListener('click', function() {
+            isPlaying = false;
+            playBtn.textContent = '▶ 再生';
+            playBtn.classList.remove('active');
+            if (animationId) cancelAnimationFrame(animationId);
+            time = 0;
+            draw();
+        });
+        
+        phaseSelect.addEventListener('change', draw);
+        window.addEventListener('resize', setup);
+        setup();
+    })();
+
+    // ===== 解説タブ：図2（経路差と波の重ね合わせ）=====
+    (function() {
+        const canvas = document.getElementById('lectureCanvas2');
+        const ctx = canvas.getContext('2d');
+        const phaseSelect = document.getElementById('fig2PhaseSelect');
+        const resetBtn = document.getElementById('fig2ResetBtn');
+        const playBtn = document.getElementById('fig2PlayBtn');
+        
+        let width, height;
+        const sourceDistance = 140;
+        let s1, s2;
+        let pointP = null;
+        let isDragging = false;
+        
+        const lambda = 60;
+        let waveTime = 0;
+        let animationId = null;
+        let isPlaying = true;
+        
+        function setup() {
+            width = canvas.parentElement.clientWidth - 30;
+            height = 520;
+            canvas.width = width;
+            canvas.height = height;
+            s1 = { x: width / 2 - sourceDistance / 2, y: 120 };
+            s2 = { x: width / 2 + sourceDistance / 2, y: 120 };
+            pointP = { x: width / 2 + 100, y: 80 };
+            startAnimation();
+        }
+        
+        function startAnimation() {
+            if (animationId) cancelAnimationFrame(animationId);
+            function animate() {
+                if (isPlaying) {
+                    waveTime += 0.015; // かなりゆっくり
+                }
+                draw();
+                animationId = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+        
+        function draw() {
+            const isOpposite = phaseSelect.value === 'opposite';
+            
+            ctx.fillStyle = '#fafaf5';
+            ctx.fillRect(0, 0, width, height);
+            
+            const topAreaHeight = 200;
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, topAreaHeight);
+            ctx.lineTo(width, topAreaHeight);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#666';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('【位置関係図】点Pをドラッグできます', 10, 20);
+            
+            if (pointP) {
+                const d1 = Math.sqrt(Math.pow(pointP.x - s1.x, 2) + Math.pow(pointP.y - s1.y, 2));
+                const d2 = Math.sqrt(Math.pow(pointP.x - s2.x, 2) + Math.pow(pointP.y - s2.y, 2));
+                const pathDiff = Math.abs(d1 - d2);
+                
+                // S1Pの線
+                ctx.strokeStyle = '#c0392b';
+                ctx.lineWidth = 3;
+                ctx.setLineDash([]);
+                ctx.beginPath();
+                ctx.moveTo(s1.x, s1.y);
+                ctx.lineTo(pointP.x, pointP.y);
+                ctx.stroke();
+                
+                // S2Pの線
+                ctx.strokeStyle = '#2980b9';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(s2.x, s2.y);
+                ctx.lineTo(pointP.x, pointP.y);
+                ctx.stroke();
+                
+                // 距離ラベル
+                ctx.font = 'bold 14px Arial';
+                ctx.textAlign = 'center';
+                
+                const mid1x = (s1.x + pointP.x) / 2;
+                const mid1y = (s1.y + pointP.y) / 2;
+                ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                ctx.fillRect(mid1x - 40, mid1y - 12, 80, 20);
+                ctx.fillStyle = '#c0392b';
+                ctx.fillText(`r₁ = ${d1.toFixed(0)}`, mid1x, mid1y + 3);
+                
+                const mid2x = (s2.x + pointP.x) / 2;
+                const mid2y = (s2.y + pointP.y) / 2;
+                ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                ctx.fillRect(mid2x - 40, mid2y - 12, 80, 20);
+                ctx.fillStyle = '#2980b9';
+                ctx.fillText(`r₂ = ${d2.toFixed(0)}`, mid2x, mid2y + 3);
+                
+                // 点P
+                ctx.fillStyle = '#8e44ad';
+                ctx.beginPath();
+                ctx.arc(pointP.x, pointP.y, 12, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 14px Arial';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('P', pointP.x, pointP.y);
+                
+                // ===== 下部：波の重ね合わせ図 =====
+                const waveAreaTop = topAreaHeight + 30;
+                
+                ctx.fillStyle = '#666';
+                ctx.font = '14px Arial';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'top';
+                ctx.fillText('【波の重ね合わせ】点Pに届く波の様子', 10, waveAreaTop);
+                
+                const waveBoxLeft = 40;
+                const waveBoxRight = width - 40;
+                const waveBoxWidth = waveBoxRight - waveBoxLeft;
+                const waveBoxTop = waveAreaTop + 30;
+                const waveBoxHeight = 250;
+                
+                ctx.strokeStyle = '#ccc';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(waveBoxLeft, waveBoxTop, waveBoxWidth, waveBoxHeight);
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(waveBoxLeft, waveBoxTop, waveBoxWidth, waveBoxHeight);
+                
+                const pX = waveBoxRight - 30;
+                const waveCenter = waveBoxTop + waveBoxHeight / 2;
+                const amplitude = 30;
+                const waveScale = 0.7;
+                
+                const scaledD1 = d1 * waveScale;
+                const scaledD2 = d2 * waveScale;
+                const scaledLambda = lambda * waveScale; // 波長もスケーリング
+                
+                const s1WaveX = pX - scaledD1;
+                const s2WaveX = pX - scaledD2;
+                
+                // 経路差の表示
+                if (Math.abs(scaledD1 - scaledD2) > 5) {
+                    const diffStart = Math.min(s1WaveX, s2WaveX);
+                    const diffEnd = Math.max(s1WaveX, s2WaveX);
+                    ctx.strokeStyle = '#8e44ad';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 3]);
+                    ctx.beginPath();
+                    ctx.moveTo(diffStart, waveBoxTop + 25);
+                    ctx.lineTo(diffEnd, waveBoxTop + 25);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(diffStart, waveBoxTop + 20);
+                    ctx.lineTo(diffStart, waveBoxTop + 30);
+                    ctx.moveTo(diffEnd, waveBoxTop + 20);
+                    ctx.lineTo(diffEnd, waveBoxTop + 30);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.fillStyle = '#8e44ad';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`経路差 = ${pathDiff.toFixed(0)}`, (diffStart + diffEnd) / 2, waveBoxTop + 12);
+                }
+                
+                // 波1（S1からの波）- 赤
+                const wave1Y = waveCenter - 50;
+                ctx.strokeStyle = '#c0392b';
+                ctx.lineWidth = 2.5;
+                ctx.setLineDash([]);
+                ctx.beginPath();
+                let firstPoint = true;
+                for (let x = Math.max(waveBoxLeft, s1WaveX); x <= pX; x += 2) {
+                    const dist = x - s1WaveX;
+                    const phase = (dist / scaledLambda) * 2 * Math.PI - waveTime * 2 * Math.PI;
+                    const y = wave1Y + amplitude * Math.sin(phase);
+                    if (firstPoint) {
+                        ctx.moveTo(x, y);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+                
+                // S1マーカー
+                if (s1WaveX >= waveBoxLeft - 10) {
+                    ctx.fillStyle = '#c0392b';
+                    ctx.beginPath();
+                    ctx.arc(Math.max(waveBoxLeft, s1WaveX), wave1Y, 10, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 11px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('S₁', Math.max(waveBoxLeft, s1WaveX), wave1Y);
+                }
+                
+                // 波2（S2からの波）- 青
+                const wave2Y = waveCenter + 50;
+                const phase2Offset = isOpposite ? Math.PI : 0;
+                ctx.strokeStyle = '#2980b9';
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                firstPoint = true;
+                for (let x = Math.max(waveBoxLeft, s2WaveX); x <= pX; x += 2) {
+                    const dist = x - s2WaveX;
+                    const phase = (dist / scaledLambda) * 2 * Math.PI - waveTime * 2 * Math.PI + phase2Offset;
+                    const y = wave2Y + amplitude * Math.sin(phase);
+                    if (firstPoint) {
+                        ctx.moveTo(x, y);
+                        firstPoint = false;
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.stroke();
+                
+                // S2マーカー
+                if (s2WaveX >= waveBoxLeft - 10) {
+                    ctx.fillStyle = '#2980b9';
+                    ctx.beginPath();
+                    ctx.arc(Math.max(waveBoxLeft, s2WaveX), wave2Y, 10, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 11px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('S₂', Math.max(waveBoxLeft, s2WaveX), wave2Y);
+                }
+                
+                // 点Pでの波の値を計算（スケーリングされた波長を使用）
+                const phase1AtP = (scaledD1 / scaledLambda) * 2 * Math.PI - waveTime * 2 * Math.PI;
+                const phase2AtP = (scaledD2 / scaledLambda) * 2 * Math.PI - waveTime * 2 * Math.PI + phase2Offset;
+                const wave1AtP = Math.sin(phase1AtP);
+                const wave2AtP = Math.sin(phase2AtP);
+                
+                // 点Pの縦線
+                ctx.strokeStyle = '#8e44ad';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 3]);
+                ctx.beginPath();
+                ctx.moveTo(pX, waveBoxTop + 40);
+                ctx.lineTo(pX, waveBoxTop + waveBoxHeight - 10);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // 点Pマーカー
+                ctx.fillStyle = '#8e44ad';
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('P', pX, waveBoxTop + waveBoxHeight + 15);
+                
+                // 点Pでの各波の位置を示す点
+                const p1Y = wave1Y + amplitude * wave1AtP;
+                const p2Y = wave2Y + amplitude * wave2AtP;
+                
+                ctx.fillStyle = '#c0392b';
+                ctx.beginPath();
+                ctx.arc(pX, p1Y, 7, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                ctx.fillStyle = '#2980b9';
+                ctx.beginPath();
+                ctx.arc(pX, p2Y, 7, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // ラベル
+                ctx.fillStyle = '#c0392b';
+                ctx.font = '13px Arial';
+                ctx.textAlign = 'left';
+                ctx.fillText('S₁からの波', waveBoxLeft + 5, wave1Y - amplitude - 15);
+                
+                ctx.fillStyle = '#2980b9';
+                ctx.fillText('S₂からの波', waveBoxLeft + 5, wave2Y - amplitude - 15);
+                
+                // 干渉判定
+                const ratio = pathDiff / lambda;
+                const remainder = ratio - Math.floor(ratio);
+                let resultText = '';
+                let resultColor = '';
+                
+                if (isOpposite) {
+                    if (Math.abs(remainder - 0.5) < 0.15) {
+                        resultText = '強め合い (' + ratio.toFixed(2) + 'λ)';
+                        resultColor = '#27ae60';
+                    } else if (Math.abs(remainder) < 0.15 || Math.abs(remainder - 1) < 0.15) {
+                        resultText = '弱め合い (' + ratio.toFixed(2) + 'λ)';
+                        resultColor = '#e74c3c';
+                    } else {
+                        resultText = '中間 (' + ratio.toFixed(2) + 'λ)';
+                        resultColor = '#f39c12';
+                    }
+                } else {
+                    if (Math.abs(remainder) < 0.15 || Math.abs(remainder - 1) < 0.15) {
+                        resultText = '強め合い (' + ratio.toFixed(2) + 'λ)';
+                        resultColor = '#27ae60';
+                    } else if (Math.abs(remainder - 0.5) < 0.15) {
+                        resultText = '弱め合い (' + ratio.toFixed(2) + 'λ)';
+                        resultColor = '#e74c3c';
+                    } else {
+                        resultText = '中間 (' + ratio.toFixed(2) + 'λ)';
+                        resultColor = '#f39c12';
+                    }
+                }
+                
+                document.getElementById('fig2R1').textContent = d1.toFixed(0);
+                document.getElementById('fig2R2').textContent = d2.toFixed(0);
+                document.getElementById('fig2PathDiff').textContent = pathDiff.toFixed(0);
+                document.getElementById('fig2Result').textContent = resultText;
+                document.getElementById('fig2Result').style.color = resultColor;
+            }
+            
+            // 波源（上部）
+            ctx.fillStyle = '#c0392b';
+            ctx.beginPath();
+            ctx.arc(s1.x, s1.y, 14, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('S₁', s1.x, s1.y);
+            
+            ctx.fillStyle = '#2980b9';
+            ctx.beginPath();
+            ctx.arc(s2.x, s2.y, 14, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.fillStyle = 'white';
+            ctx.fillText('S₂', s2.x, s2.y);
+        }
+        
+        function getMousePos(e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (e.clientX - rect.left) * (canvas.width / rect.width),
+                y: (e.clientY - rect.top) * (canvas.height / rect.height)
+            };
+        }
+        
+        canvas.addEventListener('mousedown', function(e) {
+            const pos = getMousePos(e);
+            if (pointP && pos.y < 200) {
+                const dist = Math.sqrt(Math.pow(pos.x - pointP.x, 2) + Math.pow(pos.y - pointP.y, 2));
+                if (dist < 25) {
+                    isDragging = true;
+                }
+            }
+        });
+        
+        canvas.addEventListener('mousemove', function(e) {
+            if (isDragging && pointP) {
+                const pos = getMousePos(e);
+                pointP.x = Math.max(50, Math.min(width - 50, pos.x));
+                pointP.y = Math.max(40, Math.min(180, pos.y));
+            }
+        });
+        
+        canvas.addEventListener('mouseup', function() { isDragging = false; });
+        canvas.addEventListener('mouseleave', function() { isDragging = false; });
+        
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const pos = getMousePos(touch);
+            if (pointP && pos.y < 200) {
+                const dist = Math.sqrt(Math.pow(pos.x - pointP.x, 2) + Math.pow(pos.y - pointP.y, 2));
+                if (dist < 40) isDragging = true;
+            }
+        });
+        
+        canvas.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            if (isDragging && pointP) {
+                const touch = e.touches[0];
+                const pos = getMousePos(touch);
+                pointP.x = Math.max(50, Math.min(width - 50, pos.x));
+                pointP.y = Math.max(40, Math.min(180, pos.y));
+            }
+        });
+        
+        canvas.addEventListener('touchend', function() { isDragging = false; });
+        
+        playBtn.addEventListener('click', function() {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playBtn.textContent = '⏸ 一時停止';
+                playBtn.classList.remove('pause');
+                playBtn.classList.add('primary');
+            } else {
+                playBtn.textContent = '▶ 再生';
+                playBtn.classList.remove('primary');
+                playBtn.classList.add('pause');
+            }
+        });
+        
+        resetBtn.addEventListener('click', function() {
+            pointP = { x: width / 2 + 100, y: 80 };
+        });
+        
+        window.addEventListener('resize', setup);
+        setup();
+    })();
+
+    // ===== シミュレーションタブ =====
+    (function() {
+        const canvas = document.getElementById('physicsCanvas');
+        const ctx = canvas.getContext('2d');
+        const canvas3D = document.getElementById('physics3DCanvas');
+        const ctx3D = canvas3D.getContext('2d');
+        
+        const lambdaSlider = document.getElementById('lambdaSlider');
+        const distSlider = document.getElementById('distSlider');
+        const lambdaDisplay = document.getElementById('lambdaDisplay');
+        const distDisplay = document.getElementById('distDisplay');
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const showLinesBtn = document.getElementById('showLinesBtn');
+        const clearPointBtn = document.getElementById('clearPointBtn');
+        const pointInfoPanel = document.getElementById('pointInfoPanel');
+        
+        let width, height;
+        let time = 0;
+        let isPlaying = false;
+        let showLines = false;
+        let animationId = null;
+        let s1, s2;
+        let selectedPoint = null;
+        
+        // 水滴のクラス
+        class Droplet {
+            constructor(x, targetY) {
+                this.x = x;
+                this.y = -20;
+                this.targetY = targetY;
+                this.speed = 3;
+                this.active = true;
+                this.splashing = false;
+                this.splashTime = 0;
+            }
+            
+            update() {
+                if (!this.splashing) {
+                    this.y += this.speed;
+                    if (this.y >= this.targetY) {
+                        this.y = this.targetY;
+                        this.splashing = true;
+                    }
+                } else {
+                    this.splashTime++;
+                    if (this.splashTime > 15) {
+                        this.active = false;
+                    }
+                }
+            }
+            
+            draw(ctx) {
+                if (!this.splashing) {
+                    // 水滴
+                    ctx.fillStyle = '#4fc3f7';
+                    ctx.beginPath();
+                    ctx.ellipse(this.x, this.y, 4, 6, 0, 0, 2 * Math.PI);
+                    ctx.fill();
+                    // ハイライト
+                    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                    ctx.beginPath();
+                    ctx.arc(this.x - 1, this.y - 2, 2, 0, 2 * Math.PI);
+                    ctx.fill();
+                } else {
+                    // スプラッシュ
+                    const alpha = 1 - this.splashTime / 15;
+                    ctx.strokeStyle = `rgba(79, 195, 247, ${alpha})`;
+                    ctx.lineWidth = 2;
+                    const r = this.splashTime * 2;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, r, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        let droplets1 = [];
+        let droplets2 = [];
+        let dropletTimer = 0;
+        const dropletInterval = 60;
+        
+        function resizeCanvas() {
+            const container = document.querySelector('.canvas-box');
+            width = container.clientWidth - 10;
+            height = Math.min(350, window.innerHeight * 0.35);
+            canvas.width = width;
+            canvas.height = height;
+            canvas3D.width = width;
+            canvas3D.height = height;
+            updateSources();
+            draw();
+        }
+        window.resizeSimCanvas = resizeCanvas;
+        
+        function updateSources() {
+            const d = parseFloat(distSlider.value);
+            s1 = { x: width / 2 - d / 2, y: height / 2 };
+            s2 = { x: width / 2 + d / 2, y: height / 2 };
+        }
+        
+        function draw() {
+            const lambda = parseFloat(lambdaSlider.value);
+            
+            // ===== 2D平面図 =====
+            ctx.fillStyle = '#1a1a2e';
+            ctx.fillRect(0, 0, width, height);
+            
+            // 干渉縞
+            if (showLines) {
+                const step = 3;
+                for (let x = 0; x < width; x += step) {
+                    for (let y = 0; y < height; y += step) {
+                        const d1 = Math.sqrt(Math.pow(x - s1.x, 2) + Math.pow(y - s1.y, 2));
+                        const d2 = Math.sqrt(Math.pow(x - s2.x, 2) + Math.pow(y - s2.y, 2));
+                        const pathDiff = Math.abs(d1 - d2);
+                        const m = pathDiff / lambda;
+                        const remainder = m - Math.floor(m);
+                        
+                        if (Math.abs(remainder) < 0.05 || Math.abs(remainder - 1) < 0.05) {
+                            ctx.fillStyle = 'rgba(40, 167, 69, 0.5)';
+                            ctx.fillRect(x, y, step, step);
+                        } else if (Math.abs(remainder - 0.5) < 0.05) {
+                            ctx.fillStyle = 'rgba(220, 53, 69, 0.5)';
+                            ctx.fillRect(x, y, step, step);
+                        }
+                    }
+                }
+            }
+            
+            // 波面
+            ctx.lineWidth = 1.5;
+            const maxRadius = Math.sqrt(width * width + height * height);
+            
+            for (let r = (time % lambda); r < maxRadius; r += lambda) {
+                ctx.strokeStyle = 'rgba(0, 200, 255, 0.6)';
+                ctx.setLineDash([]);
+                ctx.beginPath();
+                ctx.arc(s1.x, s1.y, r, 0, 2 * Math.PI);
+                ctx.stroke();
+                
+                if (r + lambda / 2 < maxRadius) {
+                    ctx.strokeStyle = 'rgba(255, 100, 100, 0.4)';
+                    ctx.setLineDash([6, 4]);
+                    ctx.beginPath();
+                    ctx.arc(s1.x, s1.y, r + lambda / 2, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+                
+                ctx.strokeStyle = 'rgba(0, 200, 255, 0.6)';
+                ctx.setLineDash([]);
+                ctx.beginPath();
+                ctx.arc(s2.x, s2.y, r, 0, 2 * Math.PI);
+                ctx.stroke();
+                
+                if (r + lambda / 2 < maxRadius) {
+                    ctx.strokeStyle = 'rgba(255, 100, 100, 0.4)';
+                    ctx.setLineDash([6, 4]);
+                    ctx.beginPath();
+                    ctx.arc(s2.x, s2.y, r + lambda / 2, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+            }
+            ctx.setLineDash([]);
+            
+            // 水滴を描画
+            droplets1.forEach(d => d.draw(ctx));
+            droplets2.forEach(d => d.draw(ctx));
+            
+            // 選択点
+            if (selectedPoint) {
+                const px = selectedPoint.x;
+                const py = selectedPoint.y;
+                const d1 = Math.sqrt(Math.pow(px - s1.x, 2) + Math.pow(py - s1.y, 2));
+                const d2 = Math.sqrt(Math.pow(px - s2.x, 2) + Math.pow(py - s2.y, 2));
+                
+                ctx.strokeStyle = 'rgba(255, 200, 0, 0.9)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(s1.x, s1.y);
+                ctx.lineTo(px, py);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(s2.x, s2.y);
+                ctx.lineTo(px, py);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                
+                const mid1x = (s1.x + px) / 2;
+                const mid1y = (s1.y + py) / 2;
+                ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                ctx.fillRect(mid1x - 30, mid1y - 18, 60, 18);
+                ctx.fillStyle = '#ffc107';
+                ctx.fillText(`r₁=${d1.toFixed(1)}`, mid1x, mid1y - 6);
+                
+                const mid2x = (s2.x + px) / 2;
+                const mid2y = (s2.y + py) / 2;
+                ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                ctx.fillRect(mid2x - 30, mid2y - 18, 60, 18);
+                ctx.fillStyle = '#ffc107';
+                ctx.fillText(`r₂=${d2.toFixed(1)}`, mid2x, mid2y - 6);
+                
+                ctx.fillStyle = '#9b59b6';
+                ctx.beginPath();
+                ctx.arc(px, py, 8, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 14px Arial';
+                ctx.fillText('P', px, py - 15);
+            }
+            
+            // 波源
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(s1.x, s1.y, 8, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(s2.x, s2.y, 8, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = '#1a1a2e';
+            ctx.font = 'bold 10px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('S₁', s1.x, s1.y);
+            ctx.fillText('S₂', s2.x, s2.y);
+            
+            // 凡例
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.font = '11px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('実線:山  破線:谷', 10, 20);
+            
+            // ===== 3D立体図 =====
+            draw3D(lambda);
+        }
+        
+        function draw3D(lambda) {
+            // 背景
+            const gradient = ctx3D.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, '#87CEEB');
+            gradient.addColorStop(1, '#E0F7FA');
+            ctx3D.fillStyle = gradient;
+            ctx3D.fillRect(0, 0, width, height);
+            
+            // 水面のパースペクティブパラメータ
+            const horizon = height * 0.3;
+            const waterTop = horizon;
+            const waterBottom = height;
+            
+            // 水面のグリッド描画
+            const gridSize = 15;
+            const amplitude = 12;
+            
+            // 波の高さを計算する関数
+            function getWaveHeight(wx, wy) {
+                const d1 = Math.sqrt(Math.pow(wx - 0.35, 2) + Math.pow(wy - 0.5, 2)) * width;
+                const d2 = Math.sqrt(Math.pow(wx - 0.65, 2) + Math.pow(wy - 0.5, 2)) * width;
+                const wave1 = Math.sin((d1 - time) / lambda * 2 * Math.PI);
+                const wave2 = Math.sin((d2 - time) / lambda * 2 * Math.PI);
+                return (wave1 + wave2) * amplitude;
+            }
+            
+            // 水面を奥から手前に描画
+            for (let row = 0; row < 25; row++) {
+                const wy = row / 25;
+                const screenY = waterTop + (waterBottom - waterTop) * wy;
+                const scale = 0.3 + wy * 0.7;
+                
+                for (let col = 0; col < 30; col++) {
+                    const wx = col / 30;
+                    const screenX = width * 0.1 + width * 0.8 * wx;
+                    
+                    const h = getWaveHeight(wx, wy);
+                    const adjustedY = screenY - h * scale;
+                    
+                    // 高さに応じた色
+                    const normalizedH = (h + amplitude * 2) / (amplitude * 4);
+                    const r = Math.floor(30 + normalizedH * 50);
+                    const g = Math.floor(100 + normalizedH * 80);
+                    const b = Math.floor(180 + normalizedH * 50);
+                    
+                    ctx3D.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.6 + wy * 0.3})`;
+                    const dotSize = 3 + scale * 4;
+                    ctx3D.beginPath();
+                    ctx3D.ellipse(screenX, adjustedY, dotSize, dotSize * 0.5, 0, 0, 2 * Math.PI);
+                    ctx3D.fill();
+                }
+            }
+            
+            // 波源の位置（3D）
+            const s1_3d = { x: width * 0.35, y: waterTop + (waterBottom - waterTop) * 0.5 };
+            const s2_3d = { x: width * 0.65, y: waterTop + (waterBottom - waterTop) * 0.5 };
+            
+            // 水滴を3Dで描画
+            droplets1.forEach(d => {
+                if (!d.splashing) {
+                    const scale3D = 0.3 + 0.5 * 0.7;
+                    const y3D = waterTop + (waterBottom - waterTop) * 0.5 - (s1.y - d.y) * scale3D * 0.5;
+                    ctx3D.fillStyle = '#4fc3f7';
+                    ctx3D.beginPath();
+                    ctx3D.ellipse(s1_3d.x, y3D - 30, 5, 7, 0, 0, 2 * Math.PI);
+                    ctx3D.fill();
+                }
+            });
+            
+            droplets2.forEach(d => {
+                if (!d.splashing) {
+                    const scale3D = 0.3 + 0.5 * 0.7;
+                    const y3D = waterTop + (waterBottom - waterTop) * 0.5 - (s2.y - d.y) * scale3D * 0.5;
+                    ctx3D.fillStyle = '#4fc3f7';
+                    ctx3D.beginPath();
+                    ctx3D.ellipse(s2_3d.x, y3D - 30, 5, 7, 0, 0, 2 * Math.PI);
+                    ctx3D.fill();
+                }
+            });
+            
+            // 波源マーカー（3D）
+            ctx3D.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx3D.beginPath();
+            ctx3D.arc(s1_3d.x, s1_3d.y, 6, 0, 2 * Math.PI);
+            ctx3D.fill();
+            ctx3D.beginPath();
+            ctx3D.arc(s2_3d.x, s2_3d.y, 6, 0, 2 * Math.PI);
+            ctx3D.fill();
+            
+            ctx3D.fillStyle = '#333';
+            ctx3D.font = 'bold 12px Arial';
+            ctx3D.textAlign = 'center';
+            ctx3D.fillText('S₁', s1_3d.x, s1_3d.y - 15);
+            ctx3D.fillText('S₂', s2_3d.x, s2_3d.y - 15);
+            
+            // ラベル
+            ctx3D.fillStyle = 'rgba(0,0,0,0.6)';
+            ctx3D.font = '11px Arial';
+            ctx3D.textAlign = 'left';
+            ctx3D.fillText('🌊 水面の高低を色で表現', 10, 20);
+        }
+        
+        function animate() {
+            if (!isPlaying) return;
+            time += 0.8;
+            
+            // 水滴を更新
+            dropletTimer++;
+            if (dropletTimer >= dropletInterval) {
+                dropletTimer = 0;
+                droplets1.push(new Droplet(s1.x, s1.y));
+                droplets2.push(new Droplet(s2.x, s2.y));
+            }
+            
+            droplets1.forEach(d => d.update());
+            droplets2.forEach(d => d.update());
+            droplets1 = droplets1.filter(d => d.active);
+            droplets2 = droplets2.filter(d => d.active);
+            
+            draw();
+            animationId = requestAnimationFrame(animate);
+        }
+        
+        function updatePointInfo(x, y) {
+            const lambda = parseFloat(lambdaSlider.value);
+            const d1 = Math.sqrt(Math.pow(x - s1.x, 2) + Math.pow(y - s1.y, 2));
+            const d2 = Math.sqrt(Math.pow(x - s2.x, 2) + Math.pow(y - s2.y, 2));
+            const pathDiff = Math.abs(d1 - d2);
+            const ratio = pathDiff / lambda;
+            const remainder = ratio - Math.floor(ratio);
+            
+            document.getElementById('r1Value').textContent = d1.toFixed(1) + ' px';
+            document.getElementById('r2Value').textContent = d2.toFixed(1) + ' px';
+            document.getElementById('pathDiffValue').textContent = pathDiff.toFixed(1) + ' px';
+            document.getElementById('pathDiffRatioValue').textContent = ratio.toFixed(2) + ' λ';
+            
+            const interferenceItem = document.getElementById('interferenceItem');
+            const interferenceValue = document.getElementById('interferenceValue');
+            const conditionValue = document.getElementById('conditionValue');
+            
+            interferenceItem.classList.remove('highlight-green', 'highlight-red', 'highlight-yellow');
+            
+            if (Math.abs(remainder) < 0.1 || Math.abs(remainder - 1) < 0.1) {
+                interferenceValue.textContent = '強め合い';
+                interferenceItem.classList.add('highlight-green');
+                const n = Math.round(ratio);
+                conditionValue.textContent = `Δr = ${n}λ`;
+            } else if (Math.abs(remainder - 0.5) < 0.1) {
+                interferenceValue.textContent = '弱め合い';
+                interferenceItem.classList.add('highlight-red');
+                const n = Math.floor(ratio);
+                conditionValue.textContent = `Δr = (${n}+½)λ`;
+            } else {
+                interferenceValue.textContent = '中間';
+                interferenceItem.classList.add('highlight-yellow');
+                conditionValue.textContent = `Δr ≈ ${ratio.toFixed(2)}λ`;
+            }
+            
+            pointInfoPanel.style.display = 'block';
+        }
+        
+        // イベントリスナー
+        startBtn.addEventListener('click', function() {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                startBtn.textContent = '⏸ 停止';
+                startBtn.style.background = '#ff9800';
+                animate();
+            } else {
+                startBtn.textContent = '▶ スタート';
+                startBtn.style.background = '#4CAF50';
+                if (animationId) cancelAnimationFrame(animationId);
+            }
+        });
+        
+        resetBtn.addEventListener('click', function() {
+            isPlaying = false;
+            startBtn.textContent = '▶ スタート';
+            startBtn.style.background = '#4CAF50';
+            if (animationId) cancelAnimationFrame(animationId);
+            time = 0;
+            selectedPoint = null;
+            droplets1 = [];
+            droplets2 = [];
+            dropletTimer = 0;
+            pointInfoPanel.style.display = 'none';
+            draw();
+        });
+        
+        showLinesBtn.addEventListener('click', function() {
+            showLines = !showLines;
+            if (showLines) {
+                showLinesBtn.textContent = '干渉縞を非表示';
+                showLinesBtn.classList.add('active');
+            } else {
+                showLinesBtn.textContent = '干渉縞を表示';
+                showLinesBtn.classList.remove('active');
+            }
+            draw();
+        });
+        
+        clearPointBtn.addEventListener('click', function() {
+            selectedPoint = null;
+            pointInfoPanel.style.display = 'none';
+            draw();
+        });
+        
+        lambdaSlider.addEventListener('input', function() {
+            lambdaDisplay.textContent = this.value + ' px';
+            if (selectedPoint) updatePointInfo(selectedPoint.x, selectedPoint.y);
+            if (!isPlaying) draw();
+        });
+        
+        distSlider.addEventListener('input', function() {
+            distDisplay.textContent = this.value + ' px';
+            updateSources();
+            if (selectedPoint) updatePointInfo(selectedPoint.x, selectedPoint.y);
+            if (!isPlaying) draw();
+        });
+        
+        canvas.addEventListener('click', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            selectedPoint = { x, y };
+            updatePointInfo(x, y);
+            if (!isPlaying) draw();
+        });
+        
+        window.addEventListener('resize', resizeCanvas);
+        setTimeout(resizeCanvas, 100);
+    })();
+    </script>
+</body>
+</html>

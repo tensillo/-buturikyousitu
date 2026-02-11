@@ -1,0 +1,2512 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校物理 - 弦・気柱の振動</title>
+    <script>
+      window.MathJax = {
+      tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+     }
+     };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        h1 { color: #333; }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        .tab-btn.active { background: #667eea; color: white; }
+        .tab-btn:hover { background: #8899f0; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        h2 { color: #667eea; margin-bottom: 15px; }
+        h3 { color: #764ba2; margin: 25px 0 15px 0; padding-bottom: 5px; border-bottom: 2px solid #eee; }
+        h4 { color: #555; margin: 20px 0 10px 0; }
+        p { line-height: 1.8; margin-bottom: 15px; }
+        .point-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .point-box h4 { color: #667eea; margin-top: 0; }
+        .formula-box {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        .comparison-table th { background: #667eea; color: white; }
+        .comparison-table tr:nth-child(even) { background: #f9f9f9; }
+        .note {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        
+        /* デモ共通スタイル */
+        .demo-container {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .demo-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .demo-btn {
+            padding: 10px 15px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .demo-btn:hover { background: #f0f0ff; }
+        .demo-btn.active { background: #667eea; color: white; }
+        .demo-canvas-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .demo-display { text-align: center; }
+        .demo-display canvas {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+        .demo-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        /* 波形可視化 */
+        .wave-visual {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .wave-visual canvas {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            max-width: 100%;
+        }
+        .wave-visual-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .wave-controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .wave-btn {
+            padding: 8px 16px;
+            border: 2px solid #764ba2;
+            background: white;
+            color: #764ba2;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .wave-btn:hover { background: #f5f0ff; }
+        .wave-btn.active { background: #764ba2; color: white; }
+        
+        /* スライダーコントロール */
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .slider-control label {
+            font-weight: bold;
+            min-width: 80px;
+        }
+        .slider-control input[type="range"] {
+            width: 150px;
+        }
+        .slider-value {
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        /* シミュレーション用スタイル */
+        .sim-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .sim-section h3 { border-bottom: none; margin-top: 0; }
+        #sim-container, #sim-container2 {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #stringCanvas, #pipeCanvas {
+            display: block;
+            width: 100%;
+            background: white;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+        .sim-controls {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .control-group { margin-bottom: 20px; }
+        .control-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .value-display {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: center;
+        }
+        .resonance-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .resonance-indicator.resonating {
+            background: #4CAF50;
+            color: white;
+            animation: pulse 0.5s ease-in-out infinite alternate;
+        }
+        .resonance-indicator.not-resonating { background: #f44336; color: white; }
+        @keyframes pulse {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0.8; transform: scale(1.05); }
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sim-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sim-button.start { background: #4CAF50; color: white; }
+        .sim-button.start:hover { background: #45a049; }
+        .sim-button.reset { background: #f44336; color: white; }
+        .sim-button.reset:hover { background: #da190b; }
+        .info-display {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .info-display p { margin: 5px 0; font-family: monospace; font-size: 14px; }
+        .mode-toggle { display: flex; gap: 10px; margin-bottom: 15px; }
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .mode-btn.active { background: #667eea; color: white; }
+        
+        /* 問題タブ用 */
+        .problem {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .problem h4 { color: #667eea; }
+        details { margin-top: 15px; }
+        summary {
+            cursor: pointer;
+            padding: 10px 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        summary:hover { background: #5a6fd6; }
+        .answer {
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 0 0 10px 10px;
+            margin-top: 5px;
+        }
+        
+        /* チェックボックススタイル */
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            header, .container { padding: 15px; }
+            .tab-btn { min-width: 100px; font-size: 14px; }
+            .comparison-table { font-size: 12px; }
+            .comparison-table th, .comparison-table td { padding: 8px 4px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← 目次に戻る</a>
+        <h1>弦・気柱の振動</h1>
+    </header>
+    <div class="container">
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('lecture')">解説編</button>
+            <button class="tab-btn" onclick="openTab('problem')">問題編</button>
+            <button class="tab-btn" onclick="openTab('simulation')">シミュレーション</button>
+        </div>
+        
+        <!-- ========== 解説タブ ========== -->
+        <div id="lecture" class="tab-content active">
+            <h2>弦・気柱の振動のポイント</h2>
+            
+            <h3>1. 固有振動とは？</h3>
+            <p>
+                物体にはそれぞれ<strong>「振動しやすい振動数」</strong>が存在します。これを<strong>固有振動数</strong>といいます。
+                固有振動数は物体の<strong>形・大きさ・材質</strong>などで決まり、外から与える力の大きさでは変わりません。
+            </p>
+            
+            <!-- 固有振動デモ -->
+            <div class="demo-container">
+                <div class="demo-selector">
+                    <button class="demo-btn active" id="btn-house" onclick="selectDemo('house', this)">🏠 一戸建て</button>
+                    <button class="demo-btn" id="btn-tower" onclick="selectDemo('tower', this)">🏙️ 高層ビル</button>
+                    <button class="demo-btn" id="btn-swing" onclick="selectDemo('swing', this)">🎠 ブランコ</button>
+                    <button class="demo-btn" id="btn-sandbag" onclick="selectDemo('sandbag', this)">🥊 サンドバッグ</button>
+                </div>
+                <div class="demo-canvas-container">
+                    <div class="demo-display">
+                        <canvas id="demoCanvas" width="350" height="280"></canvas>
+                        <div class="demo-info" id="demoInfo">
+                            固有振動数が高い → 速く小刻みに揺れる
+                        </div>
+                    </div>
+                </div>
+                <div class="button-group" style="justify-content: center; margin-top: 15px;">
+                    <button class="sim-button start" id="demoStartBtn" onclick="toggleDemoAnimation()">揺らす！</button>
+                </div>
+            </div>
+            
+            <div class="point-box">
+                <h4>💡 固有振動のポイント</h4>
+                <p>
+                    ・<strong>一戸建て</strong>：固有振動数が<strong>高い</strong>（速く小刻みに揺れる）<br>
+                    ・<strong>高層ビル</strong>：固有振動数が<strong>低い</strong>（ゆっくり大きく揺れる）<br>
+                    ・<strong>ブランコ</strong>：乗る人の体重に<strong>関係なく</strong>揺れ方（周期）は同じ<br>
+                    ・<strong>サンドバッグ</strong>：叩く<strong>強さは関係なく</strong>、大きく揺らすなら<strong>タイミング</strong>が大事
+                </p>
+            </div>
+            
+            <div class="note">
+                <strong>⚡ 重要</strong><br>
+                固有振動数は物体の性質で決まり、与える力の<strong>大きさ</strong>では変わらない！<br>
+                大きく揺らしたければ、固有振動数に合った<strong>タイミング</strong>で力を加えることが大切。
+            </div>
+            
+            <p>
+                このように、固有振動は建物だけでなく、弦楽器の弦や管楽器の気柱など、あらゆる物体に存在します。<br>
+                ここでは、<strong>弦</strong>と<strong>気柱</strong>が振動したときの振動数について調べていきます。
+            </p>
+            
+            <h3>2. 弦の振動</h3>
+            <p>
+                ギターやバイオリンの弦を弾くと、弦に<strong>横波</strong>が発生し、両端で反射して<strong>定常波</strong>ができます。
+            </p>
+            
+            <div class="point-box">
+                <h4>⚡ 最重要ポイント</h4>
+                <p>
+                    弦は<strong>「両端が節」</strong>になるように振動する！<br>
+                    （両端は固定されていて動けないから）
+                </p>
+            </div>
+            
+            <p>基本振動を基準にして、弦の中に入る波の数（$\frac{\lambda}{2}$ の個数）が自然数ずつ増えていきます。</p>
+            
+            <!-- 弦の波形可視化 -->
+            <div class="wave-visual">
+                <div class="wave-visual-title">🎸 弦の定常波の形（ボタンで切り替え）</div>
+                <canvas id="stringWaveCanvas" width="600" height="200"></canvas>
+                <div class="wave-controls" id="stringWaveControls">
+                    <button class="wave-btn active" onclick="setStringHarmonic(1, this)">基本振動 (n=1)</button>
+                    <button class="wave-btn" onclick="setStringHarmonic(2, this)">2倍振動 (n=2)</button>
+                    <button class="wave-btn" onclick="setStringHarmonic(3, this)">3倍振動 (n=3)</button>
+                    <button class="wave-btn" onclick="setStringHarmonic(4, this)">4倍振動 (n=4)</button>
+                </div>
+                <div class="demo-info" id="stringWaveInfo" style="margin-top: 10px;">
+                    基本振動: L = λ₁/2 → λ₁ = 2L （弦の中に半波長が1個入る）
+                </div>
+            </div>
+            
+            <div class="note">
+                <strong>🎵 実際の弦の振動</strong><br>
+                実際の弦は、基本振動・2倍振動・3倍振動...が<strong>同時に</strong>発生しています（ただし、すべて同じ大きさではない）。<br>
+                この倍振動の混ざり具合が、楽器ごとの<strong>「音色」</strong>の違いを生み出しています。
+            </div>
+            
+            <!-- 合成波デモ -->
+            <div class="wave-visual">
+                <div class="wave-visual-title">🎼 実際の弦の振動（倍振動の合成）</div>
+                <canvas id="compositeWaveCanvas" width="600" height="250"></canvas>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="harm1Check" checked onchange="updateCompositeWave()"> 基本振動</label>
+                    <label><input type="checkbox" id="harm2Check" checked onchange="updateCompositeWave()"> 2倍振動</label>
+                    <label><input type="checkbox" id="harm3Check" checked onchange="updateCompositeWave()"> 3倍振動</label>
+                    <label><input type="checkbox" id="harm4Check" onchange="updateCompositeWave()"> 4倍振動</label>
+                </div>
+                <div class="slider-control">
+                    <label>基本振動:</label>
+                    <input type="range" id="amp1Slider" min="0" max="100" value="100" onchange="updateCompositeWave()">
+                    <span class="slider-value" id="amp1Value">100%</span>
+                    <label style="margin-left:20px;">2倍振動:</label>
+                    <input type="range" id="amp2Slider" min="0" max="100" value="50" onchange="updateCompositeWave()">
+                    <span class="slider-value" id="amp2Value">50%</span>
+                </div>
+                <div class="slider-control">
+                    <label>3倍振動:</label>
+                    <input type="range" id="amp3Slider" min="0" max="100" value="30" onchange="updateCompositeWave()">
+                    <span class="slider-value" id="amp3Value">30%</span>
+                    <label style="margin-left:20px;">4倍振動:</label>
+                    <input type="range" id="amp4Slider" min="0" max="100" value="20" onchange="updateCompositeWave()">
+                    <span class="slider-value" id="amp4Value">20%</span>
+                </div>
+                <div class="button-group" style="justify-content: center; margin-top: 10px;">
+                    <button class="sim-button start" id="compositeStartBtn" onclick="toggleCompositeAnimation()">アニメーション開始</button>
+                </div>
+                <div class="demo-info" style="margin-top: 10px;">
+                    各倍振動のON/OFFと振幅を変えて、合成波形の変化を観察しよう！
+                </div>
+            </div>
+            
+            <table class="comparison-table">
+                <tr>
+                    <th>振動の種類</th>
+                    <th>弦の長さと波長の関係</th>
+                    <th>波長 $\lambda_n$</th>
+                </tr>
+                <tr>
+                    <td>基本振動（$n=1$）</td>
+                    <td>$L = \dfrac{\lambda_1}{2}$</td>
+                    <td>$\lambda_1 = 2L$</td>
+                </tr>
+                <tr>
+                    <td>2倍振動（$n=2$）</td>
+                    <td>$L = \dfrac{2\lambda_2}{2} = \lambda_2$</td>
+                    <td>$\lambda_2 = L$</td>
+                </tr>
+                <tr>
+                    <td>3倍振動（$n=3$）</td>
+                    <td>$L = \dfrac{3\lambda_3}{2}$</td>
+                    <td>$\lambda_3 = \dfrac{2L}{3}$</td>
+                </tr>
+                <tr>
+                    <td>$n$倍振動</td>
+                    <td>$L = \dfrac{n\lambda_n}{2}$</td>
+                    <td>$\lambda_n = \dfrac{2L}{n}$</td>
+                </tr>
+            </table>
+            
+            <div class="formula-box">
+                <h4>弦の固有振動数</h4>
+                <p>
+                    $f_n = \dfrac{v}{\lambda_n} = \dfrac{nv}{2L} = \dfrac{n}{2L}\sqrt{\dfrac{S}{\rho}}$ 　（$n = 1, 2, 3, ...$）
+                </p>
+                <p style="font-size: 0.9em; text-align: left; margin-top: 10px;">
+                    $v$：弦を伝わる波の速さ [m/s]、$S$：弦の張力 [N]、$\rho$：弦の線密度 [kg/m]
+                </p>
+            </div>
+            
+            <div class="note">
+                <strong>💡 ギターで音を変える方法</strong><br>
+                ・フレットを押さえる → 弦の長さ $L$ が短くなる → 振動数が上がる（高い音）<br>
+                ・弦を張る → 張力 $S$ が大きくなる → 振動数が上がる（高い音）<br>
+                ・太い弦を使う → 線密度 $\rho$ が大きくなる → 振動数が下がる（低い音）
+            </div>
+            
+            <h3>3. 気柱の振動</h3>
+            <p>
+                管の中の空気（気柱）も固有振動数を持っています。管に息を吹き込むと、気柱が固有振動を起こして音が出ます。
+            </p>
+            
+            <div class="note">
+                空気の固有振動は<strong>縦波</strong>ですが、わかりやすいように<strong>横波に変換して表示</strong>します。
+            </div>
+            
+            <h4>① 閉管（一端が閉じた管）</h4>
+            <div class="point-box">
+                <h4>⚡ 閉管のポイント</h4>
+                <p>
+                    閉管は「<strong>口が腹、底が節</strong>」になるように振動する！<br>
+                    基本振動を基準にして、$\frac{\lambda}{4}$ が<strong>奇数倍</strong>ずつ増える。
+                </p>
+            </div>
+            
+            <!-- 閉管の波形可視化 -->
+            <div class="wave-visual">
+                <div class="wave-visual-title">🎺 閉管の定常波の形（ボタンで切り替え）</div>
+                <canvas id="closedPipeWaveCanvas" width="500" height="250"></canvas>
+                <div class="wave-controls" id="closedPipeWaveControls">
+                    <button class="wave-btn active" onclick="setClosedPipeHarmonic(1, this)">基本振動 (n=1)</button>
+                    <button class="wave-btn" onclick="setClosedPipeHarmonic(3, this)">3倍振動 (n=3)</button>
+                    <button class="wave-btn" onclick="setClosedPipeHarmonic(5, this)">5倍振動 (n=5)</button>
+                    <button class="wave-btn" onclick="setClosedPipeHarmonic(7, this)">7倍振動 (n=7)</button>
+                </div>
+                <div class="demo-info" id="closedPipeWaveInfo" style="margin-top: 10px;">
+                    基本振動: L = λ₁/4 → λ₁ = 4L （管の中に1/4波長が入る）
+                </div>
+            </div>
+            
+            <table class="comparison-table">
+                <tr>
+                    <th>振動の種類</th>
+                    <th>管の長さと波長の関係</th>
+                    <th>波長 $\lambda_n$</th>
+                </tr>
+                <tr>
+                    <td>基本振動</td>
+                    <td>$L = \dfrac{\lambda_1}{4}$</td>
+                    <td>$\lambda_1 = 4L$</td>
+                </tr>
+                <tr>
+                    <td>3倍振動</td>
+                    <td>$L = \dfrac{3\lambda_3}{4}$</td>
+                    <td>$\lambda_3 = \dfrac{4L}{3}$</td>
+                </tr>
+                <tr>
+                    <td>5倍振動</td>
+                    <td>$L = \dfrac{5\lambda_5}{4}$</td>
+                    <td>$\lambda_5 = \dfrac{4L}{5}$</td>
+                </tr>
+                <tr>
+                    <td>$(2m-1)$倍振動</td>
+                    <td>$L = \dfrac{(2m-1)\lambda_n}{4}$</td>
+                    <td>$\lambda_n = \dfrac{4L}{2m-1}$</td>
+                </tr>
+            </table>
+            
+            <div class="formula-box">
+                <h4>閉管の固有振動数</h4>
+                <p>
+                    $f_n = \dfrac{V}{\lambda_n} = \dfrac{nV}{4L}$ 　（$n = 1, 3, 5, ...$ 奇数のみ）
+                </p>
+            </div>
+            
+            <h4>② 開管（両端が開いた管）</h4>
+            <div class="point-box">
+                <h4>⚡ 開管のポイント</h4>
+                <p>
+                    開管は「<strong>両端が腹</strong>」になるように振動する！<br>
+                    基本振動を基準にして、$\frac{\lambda}{4}$ が<strong>偶数倍（=整数倍）</strong>ずつ増える。
+                </p>
+            </div>
+            
+            <!-- 開管の波形可視化 -->
+            <div class="wave-visual">
+                <div class="wave-visual-title">🎵 開管の定常波の形（ボタンで切り替え）</div>
+                <canvas id="openPipeWaveCanvas" width="500" height="250"></canvas>
+                <div class="wave-controls" id="openPipeWaveControls">
+                    <button class="wave-btn active" onclick="setOpenPipeHarmonic(1, this)">基本振動 (n=1)</button>
+                    <button class="wave-btn" onclick="setOpenPipeHarmonic(2, this)">2倍振動 (n=2)</button>
+                    <button class="wave-btn" onclick="setOpenPipeHarmonic(3, this)">3倍振動 (n=3)</button>
+                    <button class="wave-btn" onclick="setOpenPipeHarmonic(4, this)">4倍振動 (n=4)</button>
+                </div>
+                <div class="demo-info" id="openPipeWaveInfo" style="margin-top: 10px;">
+                    基本振動: L = λ₁/2 → λ₁ = 2L （管の中に半波長が入る）
+                </div>
+            </div>
+            
+            <table class="comparison-table">
+                <tr>
+                    <th>振動の種類</th>
+                    <th>管の長さと波長の関係</th>
+                    <th>波長 $\lambda_n$</th>
+                </tr>
+                <tr>
+                    <td>基本振動（$n=1$）</td>
+                    <td>$L = \dfrac{\lambda_1}{2}$</td>
+                    <td>$\lambda_1 = 2L$</td>
+                </tr>
+                <tr>
+                    <td>2倍振動（$n=2$）</td>
+                    <td>$L = \lambda_2$</td>
+                    <td>$\lambda_2 = L$</td>
+                </tr>
+                <tr>
+                    <td>3倍振動（$n=3$）</td>
+                    <td>$L = \dfrac{3\lambda_3}{2}$</td>
+                    <td>$\lambda_3 = \dfrac{2L}{3}$</td>
+                </tr>
+                <tr>
+                    <td>$n$倍振動</td>
+                    <td>$L = \dfrac{n\lambda_n}{2}$</td>
+                    <td>$\lambda_n = \dfrac{2L}{n}$</td>
+                </tr>
+            </table>
+            
+            <div class="formula-box">
+                <h4>開管の固有振動数</h4>
+                <p>
+                    $f_n = \dfrac{V}{\lambda_n} = \dfrac{nV}{2L}$ 　（$n = 1, 2, 3, ...$ すべての自然数）
+                </p>
+            </div>
+            
+            <h3>4. 開口端補正</h3>
+            <p>
+                ここまでは、管の端（開口端）でちょうど腹ができると考えてきました。<br>
+                しかし、実際にペットボトルなどで音を鳴らそうとすると、口にぴったり息を吹きかけるよりも、<strong>少し離した方が鳴りやすい</strong>ことに気づきます。
+            </p>
+            
+            <div class="point-box">
+                <h4>📌 開口端補正とは</h4>
+                <p>
+                    実際に発生する定常波の腹の位置は、管の口よりも<strong>少し外側</strong>にあります。<br>
+                    このズレを<strong>開口端補正 $\Delta x$</strong> といいます。
+                </p>
+            </div>
+            
+            <!-- 開口端補正の可視化 -->
+            <div class="wave-visual">
+                <div class="wave-visual-title">📏 開口端補正のイメージ</div>
+                <canvas id="endCorrectionCanvas" width="500" height="200"></canvas>
+                <div class="demo-info" style="margin-top: 10px;">
+                    実際の腹の位置は管の口より Δx だけ外側にある
+                </div>
+            </div>
+            
+            <p>
+                管の長さ $L$ に開口端補正 $\Delta x$ を足したものが、実効的な気柱の長さになります。
+            </p>
+            
+            <div class="formula-box">
+                <h4>開口端補正を含む式</h4>
+                <p>
+                    閉管の場合：$L + \Delta x = \dfrac{\lambda_1}{4}$<br><br>
+                    開管の場合：$L + 2\Delta x = \dfrac{\lambda_1}{2}$<br>
+                    <span style="font-size: 0.85em;">（開管は両端が開いているので、補正は2倍）</span>
+                </p>
+            </div>
+            
+            <div class="note">
+                <strong>💡 開口端補正を求める実験</strong><br>
+                共鳴実験で2回の共鳴が起きたとき、気柱の長さの差は $\dfrac{\lambda}{2}$ になります。<br>
+                これを利用すると、開口端補正 $\Delta x$ を消去して波長を求められます！
+            </div>
+            
+            <h3>5. 共振・共鳴</h3>
+            <p>
+                物体が持つ固有振動数と<strong>同じ振動数</strong>の力を外から加えると、その物体は大きく振動します。<br>
+                この現象を<strong>共振</strong>といい、音に関する場合は特に<strong>共鳴</strong>といいます。
+            </p>
+            
+            <div class="point-box">
+                <h4>🔔 共振のポイント</h4>
+                <p>
+                    ・固有振動数と<strong>同じ振動数</strong>の外力を加えると、振幅が大きくなる<br>
+                    ・固有振動数は物体の<strong>長さ・形・材質</strong>で決まる<br>
+                    ・同じ固有振動数を持つ物体どうしは、一方が振動すると他方も振動を始める
+                </p>
+            </div>
+            
+            <!-- 共振デモ（振り子） -->
+            <div class="demo-container">
+                <div class="wave-visual-title">🎯 共振のデモ（振り子の実験）</div>
+                <p style="text-align: center; margin-bottom: 15px;">
+                    糸の長さが同じ振り子だけが共振して大きく揺れます。<br>
+                    駆動振り子（赤）の長さを変えて、どの振り子と共振するか観察しよう！
+                </p>
+                <canvas id="pendulumCanvas" width="650" height="320"></canvas>
+                <div class="slider-control" style="margin-top: 15px;">
+                    <label>駆動振り子の長さ:</label>
+                    <input type="range" id="driverLengthSlider" min="1" max="5" value="3" step="1" onchange="updateDriverLength()">
+                    <span class="slider-value" id="driverLengthValue">中</span>
+                </div>
+                <div class="button-group" style="justify-content: center; margin-top: 10px;">
+                    <button class="sim-button start" id="pendulumStartBtn" onclick="togglePendulumAnimation()">振り子を揺らす</button>
+                    <button class="sim-button reset" onclick="resetPendulum()">リセット</button>
+                </div>
+                <div class="demo-info" style="margin-top: 10px;" id="pendulumInfo">
+                    駆動振り子と同じ長さ（固有振動数）の振り子だけが共振します
+                </div>
+            </div>
+            
+            <div class="note">
+                <strong>💡 共鳴の例</strong><br>
+                ・おんさを鳴らすと、同じ振動数のおんさだけが鳴り出す<br>
+                ・グラスに特定の高さの声を当てると、グラスが割れることがある<br>
+                ・橋を歩く人の足並みが揃うと、橋が大きく揺れる（タコマ橋の崩壊など）
+            </div>
+            
+            <hr style="margin: 30px 0;">
+            <h2>授業資料PDF</h2>
+            <iframe src="https://drive.google.com/file/d/1rd3AUHNkj-NLM0IEztEdsiVOdPwxD6EA/preview" width="100%" height="500"></iframe>
+        </div>
+        
+        <!-- ========== 問題タブ ========== -->
+        <div id="problem" class="tab-content">
+            <h2>確認問題</h2>
+            
+            <div class="problem">
+                <h4>問題1：弦の振動</h4>
+                <p>
+                    長さが $0.60$ m の弦が基本振動、2倍振動、3倍振動するときの波長 $\lambda_1$、$\lambda_2$、$\lambda_3$ をそれぞれ求めよ。<br>
+                    また、弦を伝わる波の速さを $120$ m/s とするとき、それぞれの場合の固有振動数 $f_1$、$f_2$、$f_3$ を求めよ。
+                </p>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer">
+                        <p><strong>【波長の計算】</strong></p>
+                        <p>弦は両端が節になるので、$L = \dfrac{n\lambda_n}{2}$ より $\lambda_n = \dfrac{2L}{n}$</p>
+                        <p>
+                            ・基本振動（$n=1$）：$\lambda_1 = \dfrac{2 \times 0.60}{1} = 1.2$ m<br>
+                            ・2倍振動（$n=2$）：$\lambda_2 = \dfrac{2 \times 0.60}{2} = 0.60$ m<br>
+                            ・3倍振動（$n=3$）：$\lambda_3 = \dfrac{2 \times 0.60}{3} = 0.40$ m
+                        </p>
+                        <p><strong>【振動数の計算】</strong></p>
+                        <p>$v = f\lambda$ より $f = \dfrac{v}{\lambda}$</p>
+                        <p>
+                            ・$f_1 = \dfrac{120}{1.2} = 100$ Hz<br>
+                            ・$f_2 = \dfrac{120}{0.60} = 200$ Hz<br>
+                            ・$f_3 = \dfrac{120}{0.40} = 300$ Hz
+                        </p>
+                        <p style="color: #667eea;"><strong>ポイント：</strong>振動数は基本振動数の整数倍（$f_n = nf_1$）になっている！</p>
+                    </div>
+                </details>
+            </div>
+            
+            <div class="problem">
+                <h4>問題2：閉管の気柱共鳴</h4>
+                <p>
+                    長さが $0.60$ m の閉管内の気柱がある振動数の音で共鳴した。このとき、管の底以外に定在波の節が1か所あった。<br>
+                    音の速さを $340$ m/s とし、開口端補正は無視する。
+                </p>
+                <p>
+                    (1) 閉管内にできる定在波のようすを図示せよ。<br>
+                    (2) 気柱内の音波の波長 $\lambda$ は何 m か。<br>
+                    (3) 気柱内の音波の振動数 $f$ は何 Hz か。
+                </p>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer">
+                        <p><strong>【(1) 定在波の図】</strong></p>
+                        <p>閉管は「口が腹、底が節」。底以外に節が1か所あるので、これは<strong>3倍振動</strong>。<br>管の中に $\dfrac{3}{4}\lambda$ が入っている状態。</p>
+                        <p><strong>【(2) 波長の計算】</strong></p>
+                        <p>$L = \dfrac{3\lambda}{4}$ より<br>$0.60 = \dfrac{3\lambda}{4}$<br>$\lambda = \dfrac{0.60 \times 4}{3} = 0.80$ m</p>
+                        <p><strong>【(3) 振動数の計算】</strong></p>
+                        <p>$f = \dfrac{v}{\lambda} = \dfrac{340}{0.80} = 425$ Hz</p>
+                    </div>
+                </details>
+            </div>
+            
+            <div class="problem">
+                <h4>問題3：気柱共鳴と開口端補正</h4>
+                <p>
+                    共鳴実験で、$500$ Hz のおんさを管口に近づけ、水面を次第に下げていったところ、気柱の長さが $16.4$ cm のときに初めて共鳴が起こり、次に $50.2$ cm になったとき再び共鳴が起こった。
+                </p>
+                <p>
+                    (1) このときの音の速さ $V$ は何 m/s か。<br>
+                    (2) 開口端補正 $\Delta x$ は何 cm か。
+                </p>
+                <details>
+                    <summary>解答・解説を見る</summary>
+                    <div class="answer">
+                        <p><strong>【考え方】</strong></p>
+                        <p>これは閉管の共鳴実験。最初の共鳴は基本振動、2回目は3倍振動。</p>
+                        <p><strong>【(1) 音の速さ】</strong></p>
+                        <p>2回の共鳴の気柱の長さの差は $\dfrac{\lambda}{2}$ になる：<br>$(50.2 - 16.4) = \dfrac{\lambda}{2}$<br>$33.8 = \dfrac{\lambda}{2}$<br>$\lambda = 67.6$ cm $= 0.676$ m</p>
+                        <p>$V = f\lambda = 500 \times 0.676 = 338$ m/s</p>
+                        <p><strong>【(2) 開口端補正】</strong></p>
+                        <p>$\Delta x = \dfrac{\lambda}{4} - 16.4 = \dfrac{67.6}{4} - 16.4 = 16.9 - 16.4 = 0.5$ cm</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+        
+        <!-- ========== シミュレーションタブ ========== -->
+        <div id="simulation" class="tab-content">
+            <h2>実験シミュレーション</h2>
+            
+            <!-- 弦の振動シミュレーション -->
+            <div class="sim-section">
+                <h3>🎸 弦の振動シミュレーション</h3>
+                <p>スピーカーの振動数を変えて、弦が共鳴する様子を観察しましょう。固有振動数に一致すると定常波ができます！</p>
+                
+                <div id="sim-container">
+                    <canvas id="stringCanvas"></canvas>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>弦の長さ L: <span class="value-display" id="stringLengthDisplay">1.0 m</span></label>
+                        <input type="range" id="stringLengthSlider" min="0.5" max="2.0" value="1.0" step="0.1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>
+                            スピーカーの振動数 f: <span class="value-display" id="freqDisplay">100 Hz</span>
+                            <span class="resonance-indicator not-resonating" id="resonanceIndicator">非共鳴</span>
+                        </label>
+                        <input type="range" id="freqSlider" min="50" max="500" value="100" step="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>弦の張力（波の速さに影響）: <span class="value-display" id="tensionDisplay">200 m/s</span></label>
+                        <input type="range" id="tensionSlider" min="100" max="400" value="200" step="10">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="sim-button start" id="stringStartBtn">スタート</button>
+                        <button class="sim-button reset" id="stringResetBtn">リセット</button>
+                    </div>
+                    
+                    <div class="info-display">
+                        <p><strong>計算値</strong></p>
+                        <p id="stringInfo1">基本振動数 f₁ = 100.0 Hz</p>
+                        <p id="stringInfo2">現在の振動: 共鳴していません</p>
+                        <p id="stringInfo3">固有振動数: f₁=100Hz, f₂=200Hz, f₃=300Hz, ...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 気柱の振動シミュレーション -->
+            <div class="sim-section">
+                <h3>🎺 気柱の振動シミュレーション</h3>
+                <p>閉管と開管を切り替えて、定常波のでき方の違いを観察しましょう。</p>
+                
+                <div class="mode-toggle">
+                    <button class="mode-btn active" id="closedPipeBtn" onclick="setPipeMode('closed')">閉管（一端が閉）</button>
+                    <button class="mode-btn" id="openPipeBtn" onclick="setPipeMode('open')">開管（両端が開）</button>
+                </div>
+                
+                <div id="sim-container2">
+                    <canvas id="pipeCanvas"></canvas>
+                </div>
+                
+                <div class="sim-controls">
+                    <div class="control-group">
+                        <label>管の長さ L: <span class="value-display" id="pipeLengthDisplay">0.5 m</span></label>
+                        <input type="range" id="pipeLengthSlider" min="0.2" max="1.0" value="0.5" step="0.05">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>倍振動数 n: <span class="value-display" id="harmonicDisplay">1 倍振動</span></label>
+                        <input type="range" id="harmonicSlider" min="1" max="7" value="1" step="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label><input type="checkbox" id="showLongitudinalCheck"> 縦波表示も同時に見る</label>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="sim-button start" id="pipeStartBtn">スタート</button>
+                        <button class="sim-button reset" id="pipeResetBtn">リセット</button>
+                    </div>
+                    
+                    <div class="info-display">
+                        <p><strong>計算値（音速 V = 340 m/s）</strong></p>
+                        <p id="pipeInfo1">管の種類: 閉管</p>
+                        <p id="pipeInfo2">波長 λ = 2.00 m</p>
+                        <p id="pipeInfo3">振動数 f = 170 Hz</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // ===== タブ切り替え機能 =====
+    function openTab(tabName) {
+        var contents = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < contents.length; i++) {
+            contents[i].style.display = "none";
+            contents[i].classList.remove("active");
+        }
+        var buttons = document.getElementsByClassName("tab-btn");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.getElementById(tabName).classList.add("active");
+        if (event) event.currentTarget.classList.add("active");
+        if (tabName === 'simulation') {
+            resizeCanvases();
+            drawStringSimulation();
+            drawPipe();
+        }
+    }
+
+    // ===== 固有振動デモ =====
+    const demoCanvas = document.getElementById('demoCanvas');
+    const demoCtx = demoCanvas.getContext('2d');
+    let selectedDemo = 'house';
+    let demoAnimating = false;
+    let demoTime = 0;
+    let demoAnimationId = null;
+    
+    const demoData = {
+        house: { name: '一戸建て', frequency: 6, amplitude: 10, info: '固有振動数が高い → 速く小刻みに揺れる' },
+        tower: { name: '高層ビル', frequency: 0.8, amplitude: 30, info: '固有振動数が低い → ゆっくり大きく揺れる' },
+        swing: { name: 'ブランコ', frequency: 1.2, amplitude: 45, info: '乗る人の体重に関係なく、揺れ方（周期）は同じ' },
+        sandbag: { name: 'サンドバッグ', frequency: 1.5, amplitude: 35, info: '叩く強さではなく、タイミングが大事' }
+    };
+    
+    function selectDemo(type, btn) {
+        selectedDemo = type;
+        document.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('demoInfo').textContent = demoData[type].info;
+        drawDemo();
+    }
+    
+    function drawDemo() {
+        const W = demoCanvas.width;
+        const H = demoCanvas.height;
+        const data = demoData[selectedDemo];
+        
+        demoCtx.fillStyle = '#e8f4fc';
+        demoCtx.fillRect(0, 0, W, H);
+        
+        // 地面
+        demoCtx.fillStyle = '#8B7355';
+        demoCtx.fillRect(0, H - 25, W, 25);
+        demoCtx.fillStyle = '#228B22';
+        demoCtx.fillRect(0, H - 30, W, 8);
+        
+        const baseX = W / 2;
+        const baseY = H - 30;
+        let sway = demoAnimating ? Math.sin(demoTime * data.frequency * 0.1) * data.amplitude : 0;
+        
+        if (selectedDemo === 'house') {
+            // 一戸建て
+            const houseW = 80, houseH = 70;
+            const houseX = baseX - houseW/2 + sway * 0.3;
+            const houseY = baseY - houseH;
+            
+            demoCtx.fillStyle = '#DEB887';
+            demoCtx.fillRect(houseX, houseY, houseW, houseH);
+            
+            // 屋根
+            demoCtx.fillStyle = '#8B4513';
+            demoCtx.beginPath();
+            demoCtx.moveTo(houseX - 10 + sway * 0.5, houseY);
+            demoCtx.lineTo(baseX + sway * 0.5, houseY - 35);
+            demoCtx.lineTo(houseX + houseW + 10 + sway * 0.5, houseY);
+            demoCtx.closePath();
+            demoCtx.fill();
+            
+            // 窓とドア
+            demoCtx.fillStyle = '#87CEEB';
+            demoCtx.fillRect(houseX + 15, houseY + 15, 20, 20);
+            demoCtx.fillRect(houseX + 45, houseY + 15, 20, 20);
+            demoCtx.fillStyle = '#8B4513';
+            demoCtx.fillRect(houseX + 30, houseY + 40, 20, 30);
+            
+        } else if (selectedDemo === 'tower') {
+            // 高層ビル
+            const towerW = 50, towerH = 180;
+            const floors = 12;
+            const floorH = towerH / floors;
+            
+            for (let f = 0; f < floors; f++) {
+                const floorRatio = (f + 1) / floors;
+                const floorSway = sway * floorRatio;
+                const floorX = baseX - towerW/2 + floorSway;
+                const floorY = baseY - (f + 1) * floorH;
+                
+                demoCtx.fillStyle = '#4682B4';
+                demoCtx.fillRect(floorX, floorY, towerW, floorH - 1);
+                
+                // 窓
+                demoCtx.fillStyle = '#87CEEB';
+                for (let w = 0; w < 3; w++) {
+                    demoCtx.fillRect(floorX + 8 + w * 15, floorY + 3, 10, 8);
+                }
+            }
+            
+        } else if (selectedDemo === 'swing') {
+            // ブランコ
+            const pivotX = baseX;
+            const pivotY = 50;
+            const ropeLength = 150;
+            const angle = sway * Math.PI / 180;
+            
+            // 支柱
+            demoCtx.strokeStyle = '#555';
+            demoCtx.lineWidth = 6;
+            demoCtx.beginPath();
+            demoCtx.moveTo(baseX - 60, baseY);
+            demoCtx.lineTo(baseX - 30, pivotY);
+            demoCtx.lineTo(baseX + 30, pivotY);
+            demoCtx.lineTo(baseX + 60, baseY);
+            demoCtx.stroke();
+            demoCtx.beginPath();
+            demoCtx.moveTo(baseX - 30, pivotY);
+            demoCtx.lineTo(baseX + 30, pivotY);
+            demoCtx.stroke();
+            
+            // ロープと座席
+            const seatX = pivotX + Math.sin(angle) * ropeLength;
+            const seatY = pivotY + Math.cos(angle) * ropeLength;
+            
+            demoCtx.strokeStyle = '#8B4513';
+            demoCtx.lineWidth = 3;
+            demoCtx.beginPath();
+            demoCtx.moveTo(pivotX - 15, pivotY);
+            demoCtx.lineTo(seatX - 15, seatY);
+            demoCtx.moveTo(pivotX + 15, pivotY);
+            demoCtx.lineTo(seatX + 15, seatY);
+            demoCtx.stroke();
+            
+            // 座席
+            demoCtx.fillStyle = '#8B4513';
+            demoCtx.fillRect(seatX - 20, seatY, 40, 8);
+            
+            // 人
+            demoCtx.fillStyle = '#FFB6C1';
+            demoCtx.beginPath();
+            demoCtx.arc(seatX, seatY - 25, 12, 0, Math.PI * 2);
+            demoCtx.fill();
+            demoCtx.fillStyle = '#4169E1';
+            demoCtx.fillRect(seatX - 8, seatY - 13, 16, 20);
+            
+        } else if (selectedDemo === 'sandbag') {
+            // サンドバッグ
+            const pivotX = baseX;
+            const pivotY = 40;
+            const chainLength = 80;
+            const angle = sway * Math.PI / 180 * 0.8;
+            
+            // 天井/フレーム
+            demoCtx.fillStyle = '#555';
+            demoCtx.fillRect(baseX - 80, 30, 160, 15);
+            
+            // チェーン
+            const bagX = pivotX + Math.sin(angle) * chainLength;
+            const bagY = pivotY + Math.cos(angle) * chainLength;
+            
+            demoCtx.strokeStyle = '#888';
+            demoCtx.lineWidth = 4;
+            demoCtx.setLineDash([5, 3]);
+            demoCtx.beginPath();
+            demoCtx.moveTo(pivotX, pivotY);
+            demoCtx.lineTo(bagX, bagY);
+            demoCtx.stroke();
+            demoCtx.setLineDash([]);
+            
+            // サンドバッグ
+            demoCtx.fillStyle = '#8B0000';
+            demoCtx.beginPath();
+            demoCtx.ellipse(bagX, bagY + 50, 30, 55, 0, 0, Math.PI * 2);
+            demoCtx.fill();
+            demoCtx.fillStyle = '#A52A2A';
+            demoCtx.beginPath();
+            demoCtx.ellipse(bagX, bagY + 50, 25, 50, 0, 0, Math.PI * 2);
+            demoCtx.fill();
+            
+            // パンチのエフェクト
+            if (demoAnimating && Math.abs(sway) > data.amplitude * 0.8) {
+                demoCtx.fillStyle = '#FFD700';
+                demoCtx.font = 'bold 20px sans-serif';
+                demoCtx.fillText('💥', bagX + (sway > 0 ? -50 : 30), bagY + 30);
+            }
+        }
+        
+        // タイトル
+        demoCtx.fillStyle = '#333';
+        demoCtx.font = 'bold 16px sans-serif';
+        demoCtx.textAlign = 'center';
+        demoCtx.fillText(data.name, W/2, 22);
+    }
+    
+    function toggleDemoAnimation() {
+        if (demoAnimating) {
+            demoAnimating = false;
+            document.getElementById('demoStartBtn').textContent = '揺らす！';
+            cancelAnimationFrame(demoAnimationId);
+        } else {
+            demoAnimating = true;
+            document.getElementById('demoStartBtn').textContent = '停止';
+            animateDemo();
+        }
+    }
+    
+    function animateDemo() {
+        if (!demoAnimating) return;
+        demoTime++;
+        drawDemo();
+        demoAnimationId = requestAnimationFrame(animateDemo);
+    }
+
+    // ===== 弦の定常波可視化 =====
+    const stringWaveCanvas = document.getElementById('stringWaveCanvas');
+    const stringWaveCtx = stringWaveCanvas.getContext('2d');
+    let currentStringHarmonic = 1;
+    
+    function setStringHarmonic(n, btn) {
+        currentStringHarmonic = n;
+        document.querySelectorAll('#stringWaveControls .wave-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const infoTexts = {
+            1: '基本振動: L = λ₁/2 → λ₁ = 2L （弦の中に半波長が1個入る）',
+            2: '2倍振動: L = λ₂ → λ₂ = L （弦の中に半波長が2個入る）',
+            3: '3倍振動: L = 3λ₃/2 → λ₃ = 2L/3 （弦の中に半波長が3個入る）',
+            4: '4倍振動: L = 2λ₄ → λ₄ = L/2 （弦の中に半波長が4個入る）'
+        };
+        document.getElementById('stringWaveInfo').textContent = infoTexts[n];
+        drawStringWave();
+    }
+    
+    function drawStringWave() {
+        const W = stringWaveCanvas.width;
+        const H = stringWaveCanvas.height;
+        const n = currentStringHarmonic;
+        
+        stringWaveCtx.fillStyle = '#fafafa';
+        stringWaveCtx.fillRect(0, 0, W, H);
+        
+        const margin = 60;
+        const stringY = H / 2;
+        const stringStartX = margin;
+        const stringEndX = W - margin;
+        const stringLength = stringEndX - stringStartX;
+        const amplitude = 50;
+        
+        // 壁
+        stringWaveCtx.fillStyle = '#555';
+        stringWaveCtx.fillRect(stringStartX - 15, stringY - 40, 15, 80);
+        stringWaveCtx.fillRect(stringEndX, stringY - 40, 15, 80);
+        
+        // 静止位置
+        stringWaveCtx.strokeStyle = '#ccc';
+        stringWaveCtx.lineWidth = 1;
+        stringWaveCtx.setLineDash([5, 5]);
+        stringWaveCtx.beginPath();
+        stringWaveCtx.moveTo(stringStartX, stringY);
+        stringWaveCtx.lineTo(stringEndX, stringY);
+        stringWaveCtx.stroke();
+        stringWaveCtx.setLineDash([]);
+        
+        // 包絡線
+        stringWaveCtx.strokeStyle = '#e53935';
+        stringWaveCtx.lineWidth = 1;
+        stringWaveCtx.setLineDash([5, 5]);
+        stringWaveCtx.beginPath();
+        for (let px = 0; px <= stringLength; px++) {
+            const x = stringStartX + px;
+            const ratio = px / stringLength;
+            const envelope = Math.abs(Math.sin(n * Math.PI * ratio));
+            const y = stringY - amplitude * envelope;
+            if (px === 0) stringWaveCtx.moveTo(x, y);
+            else stringWaveCtx.lineTo(x, y);
+        }
+        stringWaveCtx.stroke();
+        stringWaveCtx.beginPath();
+        for (let px = 0; px <= stringLength; px++) {
+            const x = stringStartX + px;
+            const ratio = px / stringLength;
+            const envelope = Math.abs(Math.sin(n * Math.PI * ratio));
+            const y = stringY + amplitude * envelope;
+            if (px === 0) stringWaveCtx.moveTo(x, y);
+            else stringWaveCtx.lineTo(x, y);
+        }
+        stringWaveCtx.stroke();
+        stringWaveCtx.setLineDash([]);
+        
+        // 波形
+        stringWaveCtx.strokeStyle = '#e53935';
+        stringWaveCtx.lineWidth = 3;
+        stringWaveCtx.beginPath();
+        for (let px = 0; px <= stringLength; px++) {
+            const x = stringStartX + px;
+            const ratio = px / stringLength;
+            const y = stringY - amplitude * Math.sin(n * Math.PI * ratio);
+            if (px === 0) stringWaveCtx.moveTo(x, y);
+            else stringWaveCtx.lineTo(x, y);
+        }
+        stringWaveCtx.stroke();
+        
+        // 節
+        stringWaveCtx.fillStyle = '#2196F3';
+        for (let i = 0; i <= n; i++) {
+            const nodeX = stringStartX + (i / n) * stringLength;
+            stringWaveCtx.beginPath();
+            stringWaveCtx.arc(nodeX, stringY, 8, 0, Math.PI * 2);
+            stringWaveCtx.fill();
+        }
+        
+        // 腹
+        stringWaveCtx.fillStyle = '#4CAF50';
+        for (let i = 0; i < n; i++) {
+            const antiNodeRatio = (i + 0.5) / n;
+            const antiNodeX = stringStartX + antiNodeRatio * stringLength;
+            const antiNodeY = stringY - amplitude * Math.sin(n * Math.PI * antiNodeRatio);
+            stringWaveCtx.beginPath();
+            stringWaveCtx.arc(antiNodeX, antiNodeY, 8, 0, Math.PI * 2);
+            stringWaveCtx.fill();
+        }
+        
+        // 長さ表示
+        stringWaveCtx.strokeStyle = '#667eea';
+        stringWaveCtx.lineWidth = 2;
+        stringWaveCtx.beginPath();
+        stringWaveCtx.moveTo(stringStartX, stringY + 70);
+        stringWaveCtx.lineTo(stringEndX, stringY + 70);
+        stringWaveCtx.stroke();
+        stringWaveCtx.fillStyle = '#667eea';
+        stringWaveCtx.beginPath();
+        stringWaveCtx.moveTo(stringStartX, stringY + 70);
+        stringWaveCtx.lineTo(stringStartX + 10, stringY + 65);
+        stringWaveCtx.lineTo(stringStartX + 10, stringY + 75);
+        stringWaveCtx.closePath();
+        stringWaveCtx.fill();
+        stringWaveCtx.beginPath();
+        stringWaveCtx.moveTo(stringEndX, stringY + 70);
+        stringWaveCtx.lineTo(stringEndX - 10, stringY + 65);
+        stringWaveCtx.lineTo(stringEndX - 10, stringY + 75);
+        stringWaveCtx.closePath();
+        stringWaveCtx.fill();
+        stringWaveCtx.font = '14px sans-serif';
+        stringWaveCtx.textAlign = 'center';
+        stringWaveCtx.fillText('L', (stringStartX + stringEndX) / 2, stringY + 90);
+        
+        // 凡例
+        stringWaveCtx.font = '12px sans-serif';
+        stringWaveCtx.textAlign = 'left';
+        stringWaveCtx.fillStyle = '#4CAF50';
+        stringWaveCtx.fillText('● 腹', 10, 20);
+        stringWaveCtx.fillStyle = '#2196F3';
+        stringWaveCtx.fillText('● 節', 10, 38);
+        stringWaveCtx.fillStyle = '#764ba2';
+        stringWaveCtx.font = 'bold 14px sans-serif';
+        stringWaveCtx.textAlign = 'center';
+        stringWaveCtx.fillText(`λ/2 が ${n} 個入る`, (stringStartX + stringEndX) / 2, 25);
+    }
+
+    // ===== 合成波デモ =====
+    const compositeWaveCanvas = document.getElementById('compositeWaveCanvas');
+    const compositeWaveCtx = compositeWaveCanvas.getContext('2d');
+    let compositeAnimating = false;
+    let compositeTime = 0;
+    let compositeAnimationId = null;
+    
+    function updateCompositeWave() {
+        document.getElementById('amp1Value').textContent = document.getElementById('amp1Slider').value + '%';
+        document.getElementById('amp2Value').textContent = document.getElementById('amp2Slider').value + '%';
+        document.getElementById('amp3Value').textContent = document.getElementById('amp3Slider').value + '%';
+        document.getElementById('amp4Value').textContent = document.getElementById('amp4Slider').value + '%';
+        drawCompositeWave();
+    }
+    
+    function drawCompositeWave() {
+        const W = compositeWaveCanvas.width;
+        const H = compositeWaveCanvas.height;
+        
+        compositeWaveCtx.fillStyle = '#fafafa';
+        compositeWaveCtx.fillRect(0, 0, W, H);
+        
+        const margin = 60;
+        const centerY = H / 2;
+        const startX = margin;
+        const endX = W - margin;
+        const length = endX - startX;
+        const maxAmp = 60;
+        
+        // 壁
+        compositeWaveCtx.fillStyle = '#555';
+        compositeWaveCtx.fillRect(startX - 15, centerY - 50, 15, 100);
+        compositeWaveCtx.fillRect(endX, centerY - 50, 15, 100);
+        
+        // 静止位置
+        compositeWaveCtx.strokeStyle = '#ccc';
+        compositeWaveCtx.lineWidth = 1;
+        compositeWaveCtx.setLineDash([5, 5]);
+        compositeWaveCtx.beginPath();
+        compositeWaveCtx.moveTo(startX, centerY);
+        compositeWaveCtx.lineTo(endX, centerY);
+        compositeWaveCtx.stroke();
+        compositeWaveCtx.setLineDash([]);
+        
+        // 各成分の振幅
+        const h1 = document.getElementById('harm1Check').checked ? document.getElementById('amp1Slider').value / 100 : 0;
+        const h2 = document.getElementById('harm2Check').checked ? document.getElementById('amp2Slider').value / 100 : 0;
+        const h3 = document.getElementById('harm3Check').checked ? document.getElementById('amp3Slider').value / 100 : 0;
+        const h4 = document.getElementById('harm4Check').checked ? document.getElementById('amp4Slider').value / 100 : 0;
+        
+        const timePhase = compositeAnimating ? compositeTime * 0.08 : 0;
+        
+        // 各成分を薄く描画
+        const colors = ['rgba(33, 150, 243, 0.4)', 'rgba(76, 175, 80, 0.4)', 'rgba(255, 152, 0, 0.4)', 'rgba(156, 39, 176, 0.4)'];
+        const harmonics = [h1, h2, h3, h4];
+        
+        for (let n = 1; n <= 4; n++) {
+            if (harmonics[n-1] > 0) {
+                compositeWaveCtx.strokeStyle = colors[n-1];
+                compositeWaveCtx.lineWidth = 1.5;
+                compositeWaveCtx.beginPath();
+                for (let px = 0; px <= length; px++) {
+                    const x = startX + px;
+                    const ratio = px / length;
+                    const y = centerY - maxAmp * harmonics[n-1] * Math.sin(n * Math.PI * ratio) * Math.cos(n * timePhase);
+                    if (px === 0) compositeWaveCtx.moveTo(x, y);
+                    else compositeWaveCtx.lineTo(x, y);
+                }
+                compositeWaveCtx.stroke();
+            }
+        }
+        
+        // 合成波
+        compositeWaveCtx.strokeStyle = '#e53935';
+        compositeWaveCtx.lineWidth = 3;
+        compositeWaveCtx.beginPath();
+        for (let px = 0; px <= length; px++) {
+            const x = startX + px;
+            const ratio = px / length;
+            let y = centerY;
+            for (let n = 1; n <= 4; n++) {
+                y -= maxAmp * harmonics[n-1] * Math.sin(n * Math.PI * ratio) * Math.cos(n * timePhase);
+            }
+            if (px === 0) compositeWaveCtx.moveTo(x, y);
+            else compositeWaveCtx.lineTo(x, y);
+        }
+        compositeWaveCtx.stroke();
+        
+        // 凡例
+        compositeWaveCtx.font = '11px sans-serif';
+        compositeWaveCtx.textAlign = 'left';
+        compositeWaveCtx.fillStyle = 'rgba(33, 150, 243, 0.8)';
+        compositeWaveCtx.fillText('― 基本振動', 10, 18);
+        compositeWaveCtx.fillStyle = 'rgba(76, 175, 80, 0.8)';
+        compositeWaveCtx.fillText('― 2倍振動', 10, 33);
+        compositeWaveCtx.fillStyle = 'rgba(255, 152, 0, 0.8)';
+        compositeWaveCtx.fillText('― 3倍振動', 10, 48);
+        compositeWaveCtx.fillStyle = 'rgba(156, 39, 176, 0.8)';
+        compositeWaveCtx.fillText('― 4倍振動', 10, 63);
+        compositeWaveCtx.fillStyle = '#e53935';
+        compositeWaveCtx.font = 'bold 12px sans-serif';
+        compositeWaveCtx.fillText('━ 合成波', 10, 80);
+    }
+    
+    function toggleCompositeAnimation() {
+        if (compositeAnimating) {
+            compositeAnimating = false;
+            document.getElementById('compositeStartBtn').textContent = 'アニメーション開始';
+            cancelAnimationFrame(compositeAnimationId);
+        } else {
+            compositeAnimating = true;
+            document.getElementById('compositeStartBtn').textContent = '停止';
+            animateComposite();
+        }
+    }
+    
+    function animateComposite() {
+        if (!compositeAnimating) return;
+        compositeTime++;
+        drawCompositeWave();
+        compositeAnimationId = requestAnimationFrame(animateComposite);
+    }
+
+    // ===== 閉管の定常波可視化 =====
+    const closedPipeWaveCanvas = document.getElementById('closedPipeWaveCanvas');
+    const closedPipeWaveCtx = closedPipeWaveCanvas.getContext('2d');
+    let currentClosedPipeHarmonic = 1;
+    
+    function setClosedPipeHarmonic(n, btn) {
+        currentClosedPipeHarmonic = n;
+        document.querySelectorAll('#closedPipeWaveControls .wave-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const infoTexts = {
+            1: '基本振動: L = λ₁/4 → λ₁ = 4L （管の中に1/4波長が入る）',
+            3: '3倍振動: L = 3λ₃/4 → λ₃ = 4L/3 （管の中に3/4波長が入る）',
+            5: '5倍振動: L = 5λ₅/4 → λ₅ = 4L/5 （管の中に5/4波長が入る）',
+            7: '7倍振動: L = 7λ₇/4 → λ₇ = 4L/7 （管の中に7/4波長が入る）'
+        };
+        document.getElementById('closedPipeWaveInfo').textContent = infoTexts[n];
+        drawClosedPipeWave();
+    }
+    
+    function drawClosedPipeWave() {
+        const W = closedPipeWaveCanvas.width;
+        const H = closedPipeWaveCanvas.height;
+        const n = currentClosedPipeHarmonic;
+        
+        closedPipeWaveCtx.fillStyle = '#fafafa';
+        closedPipeWaveCtx.fillRect(0, 0, W, H);
+        
+        const pipeTop = 40, pipeBottom = H - 40;
+        const pipeHeight = pipeBottom - pipeTop;
+        const pipeWidth = 60;
+        const pipeCenterX = W / 2;
+        const pipeLeft = pipeCenterX - pipeWidth / 2;
+        const pipeRight = pipeCenterX + pipeWidth / 2;
+        const amplitude = 40;
+        
+        // 管の壁
+        closedPipeWaveCtx.strokeStyle = '#555';
+        closedPipeWaveCtx.lineWidth = 4;
+        closedPipeWaveCtx.beginPath();
+        closedPipeWaveCtx.moveTo(pipeLeft, pipeTop);
+        closedPipeWaveCtx.lineTo(pipeLeft, pipeBottom);
+        closedPipeWaveCtx.lineTo(pipeRight, pipeBottom);
+        closedPipeWaveCtx.lineTo(pipeRight, pipeTop);
+        closedPipeWaveCtx.stroke();
+        
+        // 底の斜線
+        closedPipeWaveCtx.strokeStyle = '#888';
+        closedPipeWaveCtx.lineWidth = 2;
+        for (let i = 0; i < pipeWidth; i += 8) {
+            closedPipeWaveCtx.beginPath();
+            closedPipeWaveCtx.moveTo(pipeLeft + i, pipeBottom);
+            closedPipeWaveCtx.lineTo(pipeLeft + i + 8, pipeBottom + 8);
+            closedPipeWaveCtx.stroke();
+        }
+        
+        // スピーカー
+        closedPipeWaveCtx.fillStyle = '#333';
+        closedPipeWaveCtx.font = '20px sans-serif';
+        closedPipeWaveCtx.textAlign = 'center';
+        closedPipeWaveCtx.fillText('🔊', pipeCenterX, pipeTop - 10);
+        
+        // 静止位置
+        closedPipeWaveCtx.strokeStyle = '#ccc';
+        closedPipeWaveCtx.lineWidth = 1;
+        closedPipeWaveCtx.setLineDash([5, 5]);
+        closedPipeWaveCtx.beginPath();
+        closedPipeWaveCtx.moveTo(pipeCenterX, pipeTop);
+        closedPipeWaveCtx.lineTo(pipeCenterX, pipeBottom);
+        closedPipeWaveCtx.stroke();
+        closedPipeWaveCtx.setLineDash([]);
+        
+        // 包絡線
+        closedPipeWaveCtx.strokeStyle = '#e53935';
+        closedPipeWaveCtx.lineWidth = 1;
+        closedPipeWaveCtx.setLineDash([5, 5]);
+        closedPipeWaveCtx.beginPath();
+        for (let py = 0; py <= pipeHeight; py++) {
+            const y = pipeTop + py;
+            const ratio = py / pipeHeight;
+            const envelope = Math.abs(Math.cos(n * Math.PI * ratio / 2)) * amplitude;
+            if (py === 0) closedPipeWaveCtx.moveTo(pipeCenterX + envelope, y);
+            else closedPipeWaveCtx.lineTo(pipeCenterX + envelope, y);
+        }
+        closedPipeWaveCtx.stroke();
+        closedPipeWaveCtx.beginPath();
+        for (let py = 0; py <= pipeHeight; py++) {
+            const y = pipeTop + py;
+            const ratio = py / pipeHeight;
+            const envelope = Math.abs(Math.cos(n * Math.PI * ratio / 2)) * amplitude;
+            if (py === 0) closedPipeWaveCtx.moveTo(pipeCenterX - envelope, y);
+            else closedPipeWaveCtx.lineTo(pipeCenterX - envelope, y);
+        }
+        closedPipeWaveCtx.stroke();
+        closedPipeWaveCtx.setLineDash([]);
+        
+        // 定常波
+        closedPipeWaveCtx.strokeStyle = '#e53935';
+        closedPipeWaveCtx.lineWidth = 3;
+        closedPipeWaveCtx.beginPath();
+        for (let py = 0; py <= pipeHeight; py++) {
+            const y = pipeTop + py;
+            const ratio = py / pipeHeight;
+            const displacement = Math.cos(n * Math.PI * ratio / 2) * amplitude;
+            const x = pipeCenterX + displacement;
+            if (py === 0) closedPipeWaveCtx.moveTo(x, y);
+            else closedPipeWaveCtx.lineTo(x, y);
+        }
+        closedPipeWaveCtx.stroke();
+        
+        // 腹
+        closedPipeWaveCtx.fillStyle = '#4CAF50';
+        for (let k = 0; k <= n; k++) {
+            const ratio = (2 * k) / n;
+            if (ratio <= 1) {
+                const markerY = pipeTop + ratio * pipeHeight;
+                const displacement = Math.cos(n * Math.PI * ratio / 2) * amplitude;
+                closedPipeWaveCtx.beginPath();
+                closedPipeWaveCtx.arc(pipeCenterX + displacement, markerY, 8, 0, Math.PI * 2);
+                closedPipeWaveCtx.fill();
+            }
+        }
+        
+        // 節
+        closedPipeWaveCtx.fillStyle = '#2196F3';
+        for (let k = 0; k <= n; k++) {
+            const ratio = (2 * k + 1) / n;
+            if (ratio <= 1) {
+                const markerY = pipeTop + ratio * pipeHeight;
+                closedPipeWaveCtx.beginPath();
+                closedPipeWaveCtx.arc(pipeCenterX, markerY, 8, 0, Math.PI * 2);
+                closedPipeWaveCtx.fill();
+            }
+        }
+        
+        // 長さ表示
+        closedPipeWaveCtx.strokeStyle = '#667eea';
+        closedPipeWaveCtx.lineWidth = 2;
+        closedPipeWaveCtx.beginPath();
+        closedPipeWaveCtx.moveTo(pipeLeft - 30, pipeTop);
+        closedPipeWaveCtx.lineTo(pipeLeft - 30, pipeBottom);
+        closedPipeWaveCtx.stroke();
+        closedPipeWaveCtx.fillStyle = '#667eea';
+        closedPipeWaveCtx.beginPath();
+        closedPipeWaveCtx.moveTo(pipeLeft - 30, pipeTop);
+        closedPipeWaveCtx.lineTo(pipeLeft - 35, pipeTop + 10);
+        closedPipeWaveCtx.lineTo(pipeLeft - 25, pipeTop + 10);
+        closedPipeWaveCtx.closePath();
+        closedPipeWaveCtx.fill();
+        closedPipeWaveCtx.beginPath();
+        closedPipeWaveCtx.moveTo(pipeLeft - 30, pipeBottom);
+        closedPipeWaveCtx.lineTo(pipeLeft - 35, pipeBottom - 10);
+        closedPipeWaveCtx.lineTo(pipeLeft - 25, pipeBottom - 10);
+        closedPipeWaveCtx.closePath();
+        closedPipeWaveCtx.fill();
+        closedPipeWaveCtx.font = '14px sans-serif';
+        closedPipeWaveCtx.textAlign = 'center';
+        closedPipeWaveCtx.save();
+        closedPipeWaveCtx.translate(pipeLeft - 50, (pipeTop + pipeBottom) / 2);
+        closedPipeWaveCtx.rotate(-Math.PI / 2);
+        closedPipeWaveCtx.fillText('L', 0, 0);
+        closedPipeWaveCtx.restore();
+        
+        // ラベル
+        closedPipeWaveCtx.font = '12px sans-serif';
+        closedPipeWaveCtx.textAlign = 'left';
+        closedPipeWaveCtx.fillStyle = '#333';
+        closedPipeWaveCtx.fillText('口（開）→ 腹', pipeRight + 50, pipeTop + 5);
+        closedPipeWaveCtx.fillText('底（閉）→ 節', pipeRight + 50, pipeBottom + 5);
+        closedPipeWaveCtx.fillStyle = '#4CAF50';
+        closedPipeWaveCtx.fillText('● 腹', 10, 20);
+        closedPipeWaveCtx.fillStyle = '#2196F3';
+        closedPipeWaveCtx.fillText('● 節', 10, 38);
+        closedPipeWaveCtx.fillStyle = '#764ba2';
+        closedPipeWaveCtx.font = 'bold 14px sans-serif';
+        closedPipeWaveCtx.textAlign = 'right';
+        closedPipeWaveCtx.fillText(`λ/4 が ${n} 個入る`, W - 10, 25);
+    }
+
+    // ===== 開管の定常波可視化 =====
+    const openPipeWaveCanvas = document.getElementById('openPipeWaveCanvas');
+    const openPipeWaveCtx = openPipeWaveCanvas.getContext('2d');
+    let currentOpenPipeHarmonic = 1;
+    
+    function setOpenPipeHarmonic(n, btn) {
+        currentOpenPipeHarmonic = n;
+        document.querySelectorAll('#openPipeWaveControls .wave-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const infoTexts = {
+            1: '基本振動: L = λ₁/2 → λ₁ = 2L （管の中に半波長が入る）',
+            2: '2倍振動: L = λ₂ → λ₂ = L （管の中に1波長が入る）',
+            3: '3倍振動: L = 3λ₃/2 → λ₃ = 2L/3 （管の中に3/2波長が入る）',
+            4: '4倍振動: L = 2λ₄ → λ₄ = L/2 （管の中に2波長が入る）'
+        };
+        document.getElementById('openPipeWaveInfo').textContent = infoTexts[n];
+        drawOpenPipeWave();
+    }
+    
+    function drawOpenPipeWave() {
+        const W = openPipeWaveCanvas.width;
+        const H = openPipeWaveCanvas.height;
+        const n = currentOpenPipeHarmonic;
+        
+        openPipeWaveCtx.fillStyle = '#fafafa';
+        openPipeWaveCtx.fillRect(0, 0, W, H);
+        
+        const pipeTop = 40, pipeBottom = H - 40;
+        const pipeHeight = pipeBottom - pipeTop;
+        const pipeWidth = 60;
+        const pipeCenterX = W / 2;
+        const pipeLeft = pipeCenterX - pipeWidth / 2;
+        const pipeRight = pipeCenterX + pipeWidth / 2;
+        const amplitude = 40;
+        
+        // 管の壁
+        openPipeWaveCtx.strokeStyle = '#555';
+        openPipeWaveCtx.lineWidth = 4;
+        openPipeWaveCtx.beginPath();
+        openPipeWaveCtx.moveTo(pipeLeft, pipeTop);
+        openPipeWaveCtx.lineTo(pipeLeft, pipeBottom);
+        openPipeWaveCtx.stroke();
+        openPipeWaveCtx.beginPath();
+        openPipeWaveCtx.moveTo(pipeRight, pipeTop);
+        openPipeWaveCtx.lineTo(pipeRight, pipeBottom);
+        openPipeWaveCtx.stroke();
+        
+        // スピーカー
+        openPipeWaveCtx.fillStyle = '#333';
+        openPipeWaveCtx.font = '20px sans-serif';
+        openPipeWaveCtx.textAlign = 'center';
+        openPipeWaveCtx.fillText('🔊', pipeCenterX, pipeTop - 10);
+        
+        // 静止位置
+        openPipeWaveCtx.strokeStyle = '#ccc';
+        openPipeWaveCtx.lineWidth = 1;
+        openPipeWaveCtx.setLineDash([5, 5]);
+        openPipeWaveCtx.beginPath();
+        openPipeWaveCtx.moveTo(pipeCenterX, pipeTop);
+        openPipeWaveCtx.lineTo(pipeCenterX, pipeBottom);
+        openPipeWaveCtx.stroke();
+        openPipeWaveCtx.setLineDash([]);
+        
+        // 包絡線
+        openPipeWaveCtx.strokeStyle = '#e53935';
+        openPipeWaveCtx.lineWidth = 1;
+        openPipeWaveCtx.setLineDash([5, 5]);
+        openPipeWaveCtx.beginPath();
+        for (let py = 0; py <= pipeHeight; py++) {
+            const y = pipeTop + py;
+            const ratio = py / pipeHeight;
+            const envelope = Math.abs(Math.cos(n * Math.PI * ratio)) * amplitude;
+            if (py === 0) openPipeWaveCtx.moveTo(pipeCenterX + envelope, y);
+            else openPipeWaveCtx.lineTo(pipeCenterX + envelope, y);
+        }
+        openPipeWaveCtx.stroke();
+        openPipeWaveCtx.beginPath();
+        for (let py = 0; py <= pipeHeight; py++) {
+            const y = pipeTop + py;
+            const ratio = py / pipeHeight;
+            const envelope = Math.abs(Math.cos(n * Math.PI * ratio)) * amplitude;
+            if (py === 0) openPipeWaveCtx.moveTo(pipeCenterX - envelope, y);
+            else openPipeWaveCtx.lineTo(pipeCenterX - envelope, y);
+        }
+        openPipeWaveCtx.stroke();
+        openPipeWaveCtx.setLineDash([]);
+        
+        // 定常波
+        openPipeWaveCtx.strokeStyle = '#e53935';
+        openPipeWaveCtx.lineWidth = 3;
+        openPipeWaveCtx.beginPath();
+        for (let py = 0; py <= pipeHeight; py++) {
+            const y = pipeTop + py;
+            const ratio = py / pipeHeight;
+            const displacement = Math.cos(n * Math.PI * ratio) * amplitude;
+            const x = pipeCenterX + displacement;
+            if (py === 0) openPipeWaveCtx.moveTo(x, y);
+            else openPipeWaveCtx.lineTo(x, y);
+        }
+        openPipeWaveCtx.stroke();
+        
+        // 腹
+        openPipeWaveCtx.fillStyle = '#4CAF50';
+        for (let k = 0; k <= n; k++) {
+            const ratio = k / n;
+            const markerY = pipeTop + ratio * pipeHeight;
+            const displacement = Math.cos(n * Math.PI * ratio) * amplitude;
+            openPipeWaveCtx.beginPath();
+            openPipeWaveCtx.arc(pipeCenterX + displacement, markerY, 8, 0, Math.PI * 2);
+            openPipeWaveCtx.fill();
+        }
+        
+        // 節
+        openPipeWaveCtx.fillStyle = '#2196F3';
+        for (let k = 0; k < n; k++) {
+            const ratio = (2 * k + 1) / (2 * n);
+            const markerY = pipeTop + ratio * pipeHeight;
+            openPipeWaveCtx.beginPath();
+            openPipeWaveCtx.arc(pipeCenterX, markerY, 8, 0, Math.PI * 2);
+            openPipeWaveCtx.fill();
+        }
+        
+        // 長さ表示
+        openPipeWaveCtx.strokeStyle = '#667eea';
+        openPipeWaveCtx.lineWidth = 2;
+        openPipeWaveCtx.beginPath();
+        openPipeWaveCtx.moveTo(pipeLeft - 30, pipeTop);
+        openPipeWaveCtx.lineTo(pipeLeft - 30, pipeBottom);
+        openPipeWaveCtx.stroke();
+        openPipeWaveCtx.fillStyle = '#667eea';
+        openPipeWaveCtx.beginPath();
+        openPipeWaveCtx.moveTo(pipeLeft - 30, pipeTop);
+        openPipeWaveCtx.lineTo(pipeLeft - 35, pipeTop + 10);
+        openPipeWaveCtx.lineTo(pipeLeft - 25, pipeTop + 10);
+        openPipeWaveCtx.closePath();
+        openPipeWaveCtx.fill();
+        openPipeWaveCtx.beginPath();
+        openPipeWaveCtx.moveTo(pipeLeft - 30, pipeBottom);
+        openPipeWaveCtx.lineTo(pipeLeft - 35, pipeBottom - 10);
+        openPipeWaveCtx.lineTo(pipeLeft - 25, pipeBottom - 10);
+        openPipeWaveCtx.closePath();
+        openPipeWaveCtx.fill();
+        openPipeWaveCtx.font = '14px sans-serif';
+        openPipeWaveCtx.textAlign = 'center';
+        openPipeWaveCtx.save();
+        openPipeWaveCtx.translate(pipeLeft - 50, (pipeTop + pipeBottom) / 2);
+        openPipeWaveCtx.rotate(-Math.PI / 2);
+        openPipeWaveCtx.fillText('L', 0, 0);
+        openPipeWaveCtx.restore();
+        
+        // ラベル
+        openPipeWaveCtx.font = '12px sans-serif';
+        openPipeWaveCtx.textAlign = 'left';
+        openPipeWaveCtx.fillStyle = '#333';
+        openPipeWaveCtx.fillText('口（開）→ 腹', pipeRight + 50, pipeTop + 5);
+        openPipeWaveCtx.fillText('底（開）→ 腹', pipeRight + 50, pipeBottom + 5);
+        openPipeWaveCtx.fillStyle = '#4CAF50';
+        openPipeWaveCtx.fillText('● 腹', 10, 20);
+        openPipeWaveCtx.fillStyle = '#2196F3';
+        openPipeWaveCtx.fillText('● 節', 10, 38);
+        openPipeWaveCtx.fillStyle = '#764ba2';
+        openPipeWaveCtx.font = 'bold 14px sans-serif';
+        openPipeWaveCtx.textAlign = 'right';
+        openPipeWaveCtx.fillText(`λ/2 が ${n} 個入る`, W - 10, 25);
+    }
+
+    // ===== 開口端補正の可視化 =====
+    const endCorrectionCanvas = document.getElementById('endCorrectionCanvas');
+    const endCorrectionCtx = endCorrectionCanvas.getContext('2d');
+    
+    function drawEndCorrection() {
+        const W = endCorrectionCanvas.width;
+        const H = endCorrectionCanvas.height;
+        
+        endCorrectionCtx.fillStyle = '#fafafa';
+        endCorrectionCtx.fillRect(0, 0, W, H);
+        
+        const pipeLeft = 60, pipeRight = W - 140;
+        const pipeY = H / 2;
+        const pipeWidth = 40;
+        const amplitude = 25;
+        
+        // 管の壁
+        endCorrectionCtx.strokeStyle = '#555';
+        endCorrectionCtx.lineWidth = 4;
+        endCorrectionCtx.beginPath();
+        endCorrectionCtx.moveTo(pipeLeft, pipeY - pipeWidth);
+        endCorrectionCtx.lineTo(pipeRight, pipeY - pipeWidth);
+        endCorrectionCtx.stroke();
+        endCorrectionCtx.beginPath();
+        endCorrectionCtx.moveTo(pipeLeft, pipeY + pipeWidth);
+        endCorrectionCtx.lineTo(pipeRight, pipeY + pipeWidth);
+        endCorrectionCtx.stroke();
+        endCorrectionCtx.beginPath();
+        endCorrectionCtx.moveTo(pipeLeft, pipeY - pipeWidth);
+        endCorrectionCtx.lineTo(pipeLeft, pipeY + pipeWidth);
+        endCorrectionCtx.stroke();
+        
+        // 斜線
+        endCorrectionCtx.strokeStyle = '#888';
+        endCorrectionCtx.lineWidth = 2;
+        for (let y = -pipeWidth; y < pipeWidth; y += 10) {
+            endCorrectionCtx.beginPath();
+            endCorrectionCtx.moveTo(pipeLeft, pipeY + y);
+            endCorrectionCtx.lineTo(pipeLeft - 10, pipeY + y + 10);
+            endCorrectionCtx.stroke();
+        }
+        
+        const deltaX = 35;
+        const actualEnd = pipeRight + deltaX;
+        
+        // Δx領域
+        endCorrectionCtx.fillStyle = 'rgba(255, 152, 0, 0.2)';
+        endCorrectionCtx.fillRect(pipeRight, pipeY - pipeWidth - 10, deltaX, pipeWidth * 2 + 20);
+        
+        // 定常波
+        endCorrectionCtx.strokeStyle = '#e53935';
+        endCorrectionCtx.lineWidth = 3;
+        endCorrectionCtx.beginPath();
+        const totalLength = actualEnd - pipeLeft;
+        for (let px = 0; px <= totalLength; px++) {
+            const x = pipeLeft + px;
+            const ratio = px / totalLength;
+            const displacement = Math.sin(Math.PI / 2 * ratio) * amplitude;
+            const y = pipeY - displacement;
+            if (px === 0) endCorrectionCtx.moveTo(x, y);
+            else endCorrectionCtx.lineTo(x, y);
+        }
+        endCorrectionCtx.stroke();
+        
+        // 管の端
+        endCorrectionCtx.strokeStyle = '#2196F3';
+        endCorrectionCtx.lineWidth = 2;
+        endCorrectionCtx.setLineDash([5, 5]);
+        endCorrectionCtx.beginPath();
+        endCorrectionCtx.moveTo(pipeRight, pipeY - pipeWidth - 20);
+        endCorrectionCtx.lineTo(pipeRight, pipeY + pipeWidth + 30);
+        endCorrectionCtx.stroke();
+        endCorrectionCtx.setLineDash([]);
+        
+        // 節（左端）
+        endCorrectionCtx.fillStyle = '#2196F3';
+        endCorrectionCtx.beginPath();
+        endCorrectionCtx.arc(pipeLeft, pipeY, 8, 0, Math.PI * 2);
+        endCorrectionCtx.fill();
+        
+        // 腹（右端外側）
+        endCorrectionCtx.fillStyle = '#4CAF50';
+        endCorrectionCtx.beginPath();
+        endCorrectionCtx.arc(actualEnd, pipeY - amplitude, 8, 0, Math.PI * 2);
+        endCorrectionCtx.fill();
+        
+        // Δx表示
+        endCorrectionCtx.strokeStyle = '#ff9800';
+        endCorrectionCtx.lineWidth = 2;
+        endCorrectionCtx.beginPath();
+        endCorrectionCtx.moveTo(pipeRight, pipeY + pipeWidth + 45);
+        endCorrectionCtx.lineTo(actualEnd, pipeY + pipeWidth + 45);
+        endCorrectionCtx.stroke();
+        endCorrectionCtx.fillStyle = '#ff9800';
+        endCorrectionCtx.beginPath();
+        endCorrectionCtx.moveTo(pipeRight, pipeY + pipeWidth + 45);
+        endCorrectionCtx.lineTo(pipeRight + 8, pipeY + pipeWidth + 40);
+        endCorrectionCtx.lineTo(pipeRight + 8, pipeY + pipeWidth + 50);
+        endCorrectionCtx.closePath();
+        endCorrectionCtx.fill();
+        endCorrectionCtx.beginPath();
+        endCorrectionCtx.moveTo(actualEnd, pipeY + pipeWidth + 45);
+        endCorrectionCtx.lineTo(actualEnd - 8, pipeY + pipeWidth + 40);
+        endCorrectionCtx.lineTo(actualEnd - 8, pipeY + pipeWidth + 50);
+        endCorrectionCtx.closePath();
+        endCorrectionCtx.fill();
+        endCorrectionCtx.font = 'bold 14px sans-serif';
+        endCorrectionCtx.textAlign = 'center';
+        endCorrectionCtx.fillText('Δx', (pipeRight + actualEnd) / 2, pipeY + pipeWidth + 65);
+        
+        // ラベル
+        endCorrectionCtx.fillStyle = '#333';
+        endCorrectionCtx.font = '12px sans-serif';
+        endCorrectionCtx.textAlign = 'left';
+        endCorrectionCtx.fillText('節（閉じた端）', pipeLeft - 30, pipeY - pipeWidth - 15);
+        endCorrectionCtx.fillStyle = '#2196F3';
+        endCorrectionCtx.textAlign = 'center';
+        endCorrectionCtx.fillText('管の端', pipeRight, pipeY - pipeWidth - 25);
+        endCorrectionCtx.fillStyle = '#4CAF50';
+        endCorrectionCtx.fillText('実際の腹', actualEnd, pipeY - amplitude - 20);
+    }
+
+    // ===== 振り子共振デモ =====
+    const pendulumCanvas = document.getElementById('pendulumCanvas');
+    const pendulumCtx = pendulumCanvas.getContext('2d');
+    let pendulumAnimating = false;
+    let pendulumTime = 0;
+    let pendulumAnimationId = null;
+    let driverLengthIndex = 3; // 1-5
+    
+    const pendulumLengths = [50, 70, 100, 130, 170]; // 5種類の長さ
+    const pendulumColors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'];
+    let pendulumAmplitudes = [0, 0, 0, 0, 0]; // 各振り子の振幅（共振で増加）
+    
+    function updateDriverLength() {
+        driverLengthIndex = parseInt(document.getElementById('driverLengthSlider').value);
+        const labels = ['最短', '短め', '中', '長め', '最長'];
+        document.getElementById('driverLengthValue').textContent = labels[driverLengthIndex - 1];
+        pendulumAmplitudes = [0, 0, 0, 0, 0];
+        drawPendulum();
+    }
+    
+    function drawPendulum() {
+        const W = pendulumCanvas.width;
+        const H = pendulumCanvas.height;
+        
+        pendulumCtx.fillStyle = '#f5f5f5';
+        pendulumCtx.fillRect(0, 0, W, H);
+        
+        // 支持棒
+        const barY = 30;
+        const barStartX = 50;
+        const barEndX = W - 50;
+        
+        pendulumCtx.strokeStyle = '#555';
+        pendulumCtx.lineWidth = 8;
+        pendulumCtx.beginPath();
+        pendulumCtx.moveTo(barStartX, barY);
+        pendulumCtx.lineTo(barEndX, barY);
+        pendulumCtx.stroke();
+        
+        // 支柱
+        pendulumCtx.fillStyle = '#777';
+        pendulumCtx.fillRect(barStartX - 10, barY, 15, H - barY - 10);
+        pendulumCtx.fillRect(barEndX - 5, barY, 15, H - barY - 10);
+        
+        // 駆動振り子（左端、赤）
+        const driverX = barStartX + 30;
+        const driverLength = pendulumLengths[driverLengthIndex - 1];
+        const driverFreq = 1 / Math.sqrt(driverLength / 100);
+        const driverAngle = pendulumAnimating ? Math.sin(pendulumTime * driverFreq * 0.1) * 30 * Math.PI / 180 : 0;
+        
+        drawSinglePendulum(driverX, barY, driverLength, driverAngle, '#e53935', '駆動');
+        
+        // 5つの被動振り子
+        const spacing = (barEndX - barStartX - 100) / 6;
+        for (let i = 0; i < 5; i++) {
+            const x = barStartX + 80 + spacing * (i + 1);
+            const len = pendulumLengths[i];
+            const freq = 1 / Math.sqrt(len / 100);
+            
+            // 共振判定：駆動振り子と同じ長さなら共振
+            const isResonating = (i + 1) === driverLengthIndex;
+            
+            if (pendulumAnimating) {
+                if (isResonating) {
+                    // 共振：振幅が徐々に増加
+                    pendulumAmplitudes[i] = Math.min(pendulumAmplitudes[i] + 0.3, 35);
+                } else {
+                    // 非共振：小さく揺れるか減衰
+                    pendulumAmplitudes[i] = Math.max(pendulumAmplitudes[i] - 0.1, 3);
+                }
+            }
+            
+            const angle = pendulumAnimating ? 
+                Math.sin(pendulumTime * freq * 0.1) * pendulumAmplitudes[i] * Math.PI / 180 : 0;
+            
+            drawSinglePendulum(x, barY, len, angle, pendulumColors[i], isResonating ? '共振！' : '');
+        }
+        
+        // 凡例
+        pendulumCtx.fillStyle = '#e53935';
+        pendulumCtx.font = '12px sans-serif';
+        pendulumCtx.textAlign = 'left';
+        pendulumCtx.fillText('● 駆動振り子（手で揺らす）', 10, H - 10);
+    }
+    
+    function drawSinglePendulum(pivotX, pivotY, length, angle, color, label) {
+        const bobX = pivotX + Math.sin(angle) * length;
+        const bobY = pivotY + Math.cos(angle) * length;
+        const bobRadius = 15;
+        
+        // 糸
+        pendulumCtx.strokeStyle = '#888';
+        pendulumCtx.lineWidth = 2;
+        pendulumCtx.beginPath();
+        pendulumCtx.moveTo(pivotX, pivotY);
+        pendulumCtx.lineTo(bobX, bobY);
+        pendulumCtx.stroke();
+        
+        // おもり
+        pendulumCtx.fillStyle = color;
+        pendulumCtx.beginPath();
+        pendulumCtx.arc(bobX, bobY, bobRadius, 0, Math.PI * 2);
+        pendulumCtx.fill();
+        pendulumCtx.strokeStyle = '#333';
+        pendulumCtx.lineWidth = 1;
+        pendulumCtx.stroke();
+        
+        // ラベル
+        if (label) {
+            pendulumCtx.fillStyle = label === '共振！' ? '#e53935' : '#333';
+            pendulumCtx.font = label === '共振！' ? 'bold 11px sans-serif' : '10px sans-serif';
+            pendulumCtx.textAlign = 'center';
+            pendulumCtx.fillText(label, pivotX, pivotY + length + bobRadius + 15);
+        }
+    }
+    
+    function togglePendulumAnimation() {
+        if (pendulumAnimating) {
+            pendulumAnimating = false;
+            document.getElementById('pendulumStartBtn').textContent = '振り子を揺らす';
+            cancelAnimationFrame(pendulumAnimationId);
+        } else {
+            pendulumAnimating = true;
+            document.getElementById('pendulumStartBtn').textContent = '停止';
+            animatePendulum();
+        }
+    }
+    
+    function resetPendulum() {
+        pendulumAnimating = false;
+        pendulumTime = 0;
+        pendulumAmplitudes = [0, 0, 0, 0, 0];
+        document.getElementById('pendulumStartBtn').textContent = '振り子を揺らす';
+        cancelAnimationFrame(pendulumAnimationId);
+        drawPendulum();
+    }
+    
+    function animatePendulum() {
+        if (!pendulumAnimating) return;
+        pendulumTime++;
+        drawPendulum();
+        pendulumAnimationId = requestAnimationFrame(animatePendulum);
+    }
+
+    // ===== 弦の振動シミュレーション =====
+    const stringCanvas = document.getElementById('stringCanvas');
+    const stringCtx = stringCanvas.getContext('2d');
+    let stringLength = 1.0, driverFreq = 100, waveSpeed = 200;
+    let stringAnimating = false, stringTime = 0, stringAnimationId = null;
+    
+    const stringLengthSlider = document.getElementById('stringLengthSlider');
+    const freqSlider = document.getElementById('freqSlider');
+    const tensionSlider = document.getElementById('tensionSlider');
+    const stringLengthDisplay = document.getElementById('stringLengthDisplay');
+    const freqDisplay = document.getElementById('freqDisplay');
+    const tensionDisplay = document.getElementById('tensionDisplay');
+    const resonanceIndicator = document.getElementById('resonanceIndicator');
+    
+    function getStringNaturalFrequencies() {
+        const f1 = waveSpeed / (2 * stringLength);
+        return [f1, 2*f1, 3*f1, 4*f1, 5*f1];
+    }
+    
+    function getResonanceMode() {
+        const freqs = getStringNaturalFrequencies();
+        for (let n = 0; n < freqs.length; n++) {
+            if (Math.abs(driverFreq - freqs[n]) < 5) return n + 1;
+        }
+        return 0;
+    }
+    
+    function drawStringSimulation() {
+        const W = stringCanvas.width;
+        const H = stringCanvas.height;
+        
+        stringCtx.fillStyle = '#f8f9fa';
+        stringCtx.fillRect(0, 0, W, H);
+        
+        const margin = 80;
+        const stringY = H * 0.5;
+        const stringStartX = margin;
+        const stringEndX = W - margin;
+        const stringPixelLength = stringEndX - stringStartX;
+        
+        // 壁
+        stringCtx.fillStyle = '#555';
+        stringCtx.fillRect(stringStartX - 20, stringY - 60, 20, 120);
+        stringCtx.fillRect(stringEndX, stringY - 60, 20, 120);
+        
+        // フレット
+        stringCtx.fillStyle = '#8B4513';
+        stringCtx.beginPath();
+        stringCtx.moveTo(stringStartX, stringY - 15);
+        stringCtx.lineTo(stringStartX + 15, stringY);
+        stringCtx.lineTo(stringStartX, stringY + 15);
+        stringCtx.closePath();
+        stringCtx.fill();
+        
+        // スピーカー
+        const speakerY = stringY + 35;
+        const speakerOffset = stringAnimating ? Math.sin(stringTime * driverFreq * 2 * Math.PI / 60) * 3 : 0;
+        stringCtx.fillStyle = '#333';
+        stringCtx.fillRect(stringStartX - 12 + speakerOffset, speakerY, 25, 25);
+        stringCtx.fillStyle = '#666';
+        stringCtx.beginPath();
+        stringCtx.arc(stringStartX + speakerOffset, speakerY + 12, 8, 0, Math.PI * 2);
+        stringCtx.fill();
+        stringCtx.fillStyle = '#333';
+        stringCtx.font = '12px sans-serif';
+        stringCtx.textAlign = 'center';
+        stringCtx.fillText('スピーカー', stringStartX, speakerY + 40);
+        
+        const resonanceMode = getResonanceMode();
+        const amplitude = resonanceMode > 0 ? 40 : 5;
+        
+        stringCtx.strokeStyle = resonanceMode > 0 ? '#e53935' : '#333';
+        stringCtx.lineWidth = resonanceMode > 0 ? 3 : 2;
+        stringCtx.beginPath();
+        for (let px = 0; px <= stringPixelLength; px++) {
+            const x = stringStartX + px;
+            const ratio = px / stringPixelLength;
+            let y = stringY;
+            if (stringAnimating && resonanceMode > 0) {
+                y = stringY - amplitude * Math.sin(resonanceMode * Math.PI * ratio) * Math.cos(stringTime * 0.1);
+            } else if (stringAnimating) {
+                y = stringY - amplitude * Math.sin(ratio * 10 + stringTime * 0.2) * Math.cos(ratio * 5 - stringTime * 0.15);
+            }
+            if (px === 0) stringCtx.moveTo(x, y);
+            else stringCtx.lineTo(x, y);
+        }
+        stringCtx.stroke();
+        
+        if (resonanceMode > 0 && stringAnimating) {
+            stringCtx.fillStyle = '#2196F3';
+            for (let i = 0; i <= resonanceMode; i++) {
+                stringCtx.beginPath();
+                stringCtx.arc(stringStartX + (i / resonanceMode) * stringPixelLength, stringY, 6, 0, Math.PI * 2);
+                stringCtx.fill();
+            }
+            stringCtx.fillStyle = '#4CAF50';
+            for (let i = 0; i < resonanceMode; i++) {
+                stringCtx.beginPath();
+                stringCtx.arc(stringStartX + ((i + 0.5) / resonanceMode) * stringPixelLength, stringY, 6, 0, Math.PI * 2);
+                stringCtx.fill();
+            }
+        }
+        
+        // 長さ表示
+        stringCtx.strokeStyle = '#667eea';
+        stringCtx.lineWidth = 1;
+        stringCtx.setLineDash([5, 5]);
+        stringCtx.beginPath();
+        stringCtx.moveTo(stringStartX, stringY + 80);
+        stringCtx.lineTo(stringEndX, stringY + 80);
+        stringCtx.stroke();
+        stringCtx.setLineDash([]);
+        stringCtx.fillStyle = '#667eea';
+        stringCtx.font = '14px sans-serif';
+        stringCtx.fillText('L = ' + stringLength.toFixed(1) + ' m', (stringStartX + stringEndX)/2, stringY + 100);
+        
+        // 凡例
+        stringCtx.font = '12px sans-serif';
+        stringCtx.textAlign = 'left';
+        stringCtx.fillStyle = '#2196F3';
+        stringCtx.fillText('● 節', W - 100, 30);
+        stringCtx.fillStyle = '#4CAF50';
+        stringCtx.fillText('● 腹', W - 100, 50);
+    }
+    
+    function animateStringSimulation() {
+        if (!stringAnimating) return;
+        stringTime++;
+        drawStringSimulation();
+        stringAnimationId = requestAnimationFrame(animateStringSimulation);
+    }
+    
+    function updateStringInfo() {
+        const freqs = getStringNaturalFrequencies();
+        document.getElementById('stringInfo1').textContent = '基本振動数 f₁ = ' + freqs[0].toFixed(1) + ' Hz';
+        const mode = getResonanceMode();
+        if (mode > 0) {
+            document.getElementById('stringInfo2').textContent = '現在の振動: ' + mode + '倍振動で共鳴中！';
+            resonanceIndicator.textContent = mode + '倍振動で共鳴！';
+            resonanceIndicator.className = 'resonance-indicator resonating';
+        } else {
+            document.getElementById('stringInfo2').textContent = '現在の振動: 共鳴していません';
+            resonanceIndicator.textContent = '非共鳴';
+            resonanceIndicator.className = 'resonance-indicator not-resonating';
+        }
+        document.getElementById('stringInfo3').textContent = '固有振動数: ' + freqs.slice(0, 5).map((f, i) => 'f₁×' + (i+1) + '=' + Math.round(f) + 'Hz').join(', ');
+    }
+    
+    stringLengthSlider.addEventListener('input', function() {
+        stringLength = parseFloat(this.value);
+        stringLengthDisplay.textContent = stringLength.toFixed(1) + ' m';
+        updateStringInfo();
+        drawStringSimulation();
+    });
+    freqSlider.addEventListener('input', function() {
+        driverFreq = parseFloat(this.value);
+        freqDisplay.textContent = driverFreq + ' Hz';
+        updateStringInfo();
+        drawStringSimulation();
+    });
+    tensionSlider.addEventListener('input', function() {
+        waveSpeed = parseFloat(this.value);
+        tensionDisplay.textContent = waveSpeed + ' m/s';
+        updateStringInfo();
+        drawStringSimulation();
+    });
+    document.getElementById('stringStartBtn').addEventListener('click', function() {
+        if (stringAnimating) {
+            stringAnimating = false;
+            this.textContent = 'スタート';
+            cancelAnimationFrame(stringAnimationId);
+        } else {
+            stringAnimating = true;
+            this.textContent = '停止';
+            animateStringSimulation();
+        }
+    });
+    document.getElementById('stringResetBtn').addEventListener('click', function() {
+        stringAnimating = false;
+        stringTime = 0;
+        document.getElementById('stringStartBtn').textContent = 'スタート';
+        cancelAnimationFrame(stringAnimationId);
+        drawStringSimulation();
+    });
+
+    // ===== 気柱の振動シミュレーション =====
+    const pipeCanvas = document.getElementById('pipeCanvas');
+    const pipeCtx = pipeCanvas.getContext('2d');
+    let pipeLength = 0.5, harmonic = 1, pipeMode = 'closed', soundSpeed = 340;
+    let pipeAnimating = false, pipeTime = 0, pipeAnimationId = null, showLongitudinal = false;
+    
+    const pipeLengthSlider = document.getElementById('pipeLengthSlider');
+    const harmonicSlider = document.getElementById('harmonicSlider');
+    const pipeLengthDisplay = document.getElementById('pipeLengthDisplay');
+    const harmonicDisplay = document.getElementById('harmonicDisplay');
+    
+    function setPipeMode(mode) {
+        pipeMode = mode;
+        document.getElementById('closedPipeBtn').classList.toggle('active', mode === 'closed');
+        document.getElementById('openPipeBtn').classList.toggle('active', mode === 'open');
+        if (mode === 'closed' && harmonic % 2 === 0) {
+            harmonic--;
+            harmonicSlider.value = harmonic;
+        }
+        harmonicDisplay.textContent = harmonic + ' 倍振動';
+        updatePipeInfo();
+        drawPipe();
+    }
+    
+    function getPipeWavelength() {
+        return pipeMode === 'closed' ? 4 * pipeLength / harmonic : 2 * pipeLength / harmonic;
+    }
+    
+    function drawPipe() {
+        const W = pipeCanvas.width;
+        const H = pipeCanvas.height;
+        
+        pipeCtx.fillStyle = '#f8f9fa';
+        pipeCtx.fillRect(0, 0, W, H);
+        
+        const pipeTop = 60, pipeBottom = H - 60;
+        const pipeHeight = pipeBottom - pipeTop;
+        const pipeWidth = 80;
+        const pipeCenterX = W / 2;
+        const pipeLeft = pipeCenterX - pipeWidth / 2;
+        const pipeRight = pipeCenterX + pipeWidth / 2;
+        
+        // 管の壁
+        pipeCtx.strokeStyle = '#555';
+        pipeCtx.lineWidth = 4;
+        pipeCtx.beginPath();
+        pipeCtx.moveTo(pipeLeft, pipeTop);
+        pipeCtx.lineTo(pipeLeft, pipeBottom);
+        pipeCtx.stroke();
+        pipeCtx.beginPath();
+        pipeCtx.moveTo(pipeRight, pipeTop);
+        pipeCtx.lineTo(pipeRight, pipeBottom);
+        pipeCtx.stroke();
+        
+        if (pipeMode === 'closed') {
+            pipeCtx.beginPath();
+            pipeCtx.moveTo(pipeLeft, pipeBottom);
+            pipeCtx.lineTo(pipeRight, pipeBottom);
+            pipeCtx.stroke();
+            pipeCtx.strokeStyle = '#888';
+            pipeCtx.lineWidth = 2;
+            for (let i = 0; i < pipeWidth; i += 10) {
+                pipeCtx.beginPath();
+                pipeCtx.moveTo(pipeLeft + i, pipeBottom);
+                pipeCtx.lineTo(pipeLeft + i + 10, pipeBottom + 10);
+                pipeCtx.stroke();
+            }
+        }
+        
+        // スピーカー
+        const speakerY = pipeTop - 30;
+        const speakerOffset = pipeAnimating ? Math.sin(pipeTime * 0.15) * 3 : 0;
+        pipeCtx.fillStyle = '#333';
+        pipeCtx.fillRect(pipeCenterX - 20, speakerY - 20 + speakerOffset, 40, 20);
+        pipeCtx.fillStyle = '#666';
+        pipeCtx.beginPath();
+        pipeCtx.moveTo(pipeCenterX - 13, speakerY + speakerOffset);
+        pipeCtx.lineTo(pipeCenterX, speakerY + 15 + speakerOffset);
+        pipeCtx.lineTo(pipeCenterX + 13, speakerY + speakerOffset);
+        pipeCtx.closePath();
+        pipeCtx.fill();
+        
+        // 定常波
+        const waveAmplitude = 30;
+        const n = harmonic;
+        
+        pipeCtx.strokeStyle = '#e53935';
+        pipeCtx.lineWidth = 3;
+        pipeCtx.beginPath();
+        for (let py = 0; py <= pipeHeight; py++) {
+            const y = pipeTop + py;
+            const ratio = py / pipeHeight;
+            let displacement = 0;
+            if (pipeAnimating) {
+                displacement = pipeMode === 'closed' ? 
+                    Math.cos(n * Math.PI * ratio / 2) * Math.cos(pipeTime * 0.1) :
+                    Math.cos(n * Math.PI * ratio) * Math.cos(pipeTime * 0.1);
+            }
+            const x = pipeCenterX + displacement * waveAmplitude;
+            if (py === 0) pipeCtx.moveTo(x, y);
+            else pipeCtx.lineTo(x, y);
+        }
+        pipeCtx.stroke();
+        
+        // 包絡線
+        pipeCtx.strokeStyle = '#e53935';
+        pipeCtx.lineWidth = 1;
+        pipeCtx.setLineDash([5, 5]);
+        pipeCtx.beginPath();
+        for (let py = 0; py <= pipeHeight; py++) {
+            const y = pipeTop + py;
+            const ratio = py / pipeHeight;
+            const envelope = pipeMode === 'closed' ? Math.abs(Math.cos(n * Math.PI * ratio / 2)) : Math.abs(Math.cos(n * Math.PI * ratio));
+            if (py === 0) pipeCtx.moveTo(pipeCenterX + envelope * waveAmplitude, y);
+            else pipeCtx.lineTo(pipeCenterX + envelope * waveAmplitude, y);
+        }
+        pipeCtx.stroke();
+        pipeCtx.beginPath();
+        for (let py = 0; py <= pipeHeight; py++) {
+            const y = pipeTop + py;
+            const ratio = py / pipeHeight;
+            const envelope = pipeMode === 'closed' ? Math.abs(Math.cos(n * Math.PI * ratio / 2)) : Math.abs(Math.cos(n * Math.PI * ratio));
+            if (py === 0) pipeCtx.moveTo(pipeCenterX - envelope * waveAmplitude, y);
+            else pipeCtx.lineTo(pipeCenterX - envelope * waveAmplitude, y);
+        }
+        pipeCtx.stroke();
+        pipeCtx.setLineDash([]);
+        
+        // マーカー
+        if (pipeMode === 'closed') {
+            pipeCtx.fillStyle = '#4CAF50';
+            for (let k = 0; k <= n; k++) {
+                const ratio = (2 * k) / n;
+                if (ratio <= 1) {
+                    pipeCtx.beginPath();
+                    pipeCtx.arc(pipeRight + 20, pipeTop + ratio * pipeHeight, 6, 0, Math.PI * 2);
+                    pipeCtx.fill();
+                }
+            }
+            pipeCtx.fillStyle = '#2196F3';
+            for (let k = 0; k <= n; k++) {
+                const ratio = (2 * k + 1) / n;
+                if (ratio <= 1) {
+                    pipeCtx.beginPath();
+                    pipeCtx.arc(pipeRight + 20, pipeTop + ratio * pipeHeight, 6, 0, Math.PI * 2);
+                    pipeCtx.fill();
+                }
+            }
+        } else {
+            pipeCtx.fillStyle = '#4CAF50';
+            for (let k = 0; k <= n; k++) {
+                pipeCtx.beginPath();
+                pipeCtx.arc(pipeRight + 20, pipeTop + (k / n) * pipeHeight, 6, 0, Math.PI * 2);
+                pipeCtx.fill();
+            }
+            pipeCtx.fillStyle = '#2196F3';
+            for (let k = 0; k < n; k++) {
+                pipeCtx.beginPath();
+                pipeCtx.arc(pipeRight + 20, pipeTop + ((2 * k + 1) / (2 * n)) * pipeHeight, 6, 0, Math.PI * 2);
+                pipeCtx.fill();
+            }
+        }
+        
+        // 長さ表示
+        pipeCtx.strokeStyle = '#667eea';
+        pipeCtx.lineWidth = 1;
+        pipeCtx.setLineDash([5, 5]);
+        pipeCtx.beginPath();
+        pipeCtx.moveTo(pipeLeft - 30, pipeTop);
+        pipeCtx.lineTo(pipeLeft - 30, pipeBottom);
+        pipeCtx.stroke();
+        pipeCtx.setLineDash([]);
+        pipeCtx.fillStyle = '#667eea';
+        pipeCtx.font = '14px sans-serif';
+        pipeCtx.textAlign = 'center';
+        pipeCtx.save();
+        pipeCtx.translate(pipeLeft - 50, (pipeTop + pipeBottom) / 2);
+        pipeCtx.rotate(-Math.PI / 2);
+        pipeCtx.fillText('L = ' + pipeLength.toFixed(2) + ' m', 0, 0);
+        pipeCtx.restore();
+        
+        // ラベル
+        pipeCtx.font = '14px sans-serif';
+        pipeCtx.textAlign = 'left';
+        pipeCtx.fillStyle = '#333';
+        pipeCtx.fillText(pipeMode === 'closed' ? '閉管' : '開管', 20, 30);
+        pipeCtx.fillText(harmonic + '倍振動', 20, 50);
+        pipeCtx.fillStyle = '#4CAF50';
+        pipeCtx.fillText('● 腹', W - 100, 30);
+        pipeCtx.fillStyle = '#2196F3';
+        pipeCtx.fillText('● 節', W - 100, 50);
+        
+        if (showLongitudinal && pipeAnimating) {
+            // 縦波表示（省略）
+        }
+    }
+    
+    function animatePipe() {
+        if (!pipeAnimating) return;
+        pipeTime++;
+        drawPipe();
+        pipeAnimationId = requestAnimationFrame(animatePipe);
+    }
+    
+    function updatePipeInfo() {
+        const wavelength = getPipeWavelength();
+        const frequency = soundSpeed / wavelength;
+        document.getElementById('pipeInfo1').textContent = '管の種類: ' + (pipeMode === 'closed' ? '閉管（一端閉）' : '開管（両端開）');
+        document.getElementById('pipeInfo2').textContent = '波長 λ = ' + wavelength.toFixed(3) + ' m';
+        document.getElementById('pipeInfo3').textContent = '振動数 f = ' + frequency.toFixed(1) + ' Hz';
+    }
+    
+    pipeLengthSlider.addEventListener('input', function() {
+        pipeLength = parseFloat(this.value);
+        pipeLengthDisplay.textContent = pipeLength.toFixed(2) + ' m';
+        updatePipeInfo();
+        drawPipe();
+    });
+    harmonicSlider.addEventListener('input', function() {
+        let value = parseInt(this.value);
+        if (pipeMode === 'closed' && value % 2 === 0) {
+            value--;
+            this.value = value;
+        }
+        harmonic = value;
+        harmonicDisplay.textContent = harmonic + ' 倍振動';
+        updatePipeInfo();
+        drawPipe();
+    });
+    document.getElementById('showLongitudinalCheck').addEventListener('change', function() {
+        showLongitudinal = this.checked;
+        drawPipe();
+    });
+    document.getElementById('pipeStartBtn').addEventListener('click', function() {
+        if (pipeAnimating) {
+            pipeAnimating = false;
+            this.textContent = 'スタート';
+            cancelAnimationFrame(pipeAnimationId);
+        } else {
+            pipeAnimating = true;
+            this.textContent = '停止';
+            animatePipe();
+        }
+    });
+    document.getElementById('pipeResetBtn').addEventListener('click', function() {
+        pipeAnimating = false;
+        pipeTime = 0;
+        document.getElementById('pipeStartBtn').textContent = 'スタート';
+        cancelAnimationFrame(pipeAnimationId);
+        drawPipe();
+    });
+
+    // ===== 共通処理 =====
+    function resizeCanvases() {
+        stringCanvas.width = stringCanvas.parentElement.clientWidth - 40;
+        stringCanvas.height = 300;
+        pipeCanvas.width = pipeCanvas.parentElement.clientWidth - 40;
+        pipeCanvas.height = 450;
+    }
+    
+    // 初期化
+    window.addEventListener('load', function() {
+        resizeCanvases();
+        drawDemo();
+        drawStringWave();
+        drawCompositeWave();
+        drawClosedPipeWave();
+        drawOpenPipeWave();
+        drawEndCorrection();
+        drawPendulum();
+        updateStringInfo();
+        updatePipeInfo();
+        drawStringSimulation();
+        drawPipe();
+    });
+    
+    window.addEventListener('resize', function() {
+        resizeCanvases();
+        drawStringSimulation();
+        drawPipe();
+    });
+    </script>
+</body>
+</html>
